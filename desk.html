@@ -153,6 +153,12 @@ tr.new td{animation:flash 1.4s ease}
 @keyframes flash{from{background:rgba(88,199,255,.14)}to{background:transparent}}
 td.fire{color:var(--fire)} td.size_down{color:var(--size)} td.block{color:var(--block)}
 .empty{color:var(--faint);font-family:var(--mono);font-size:11px;padding:18px 14px}
+.links{display:flex;gap:6px}
+.ilink{width:30px;height:30px;display:grid;place-items:center;border-radius:8px;border:1px solid var(--line2);color:var(--dim);transition:all .15s}
+.ilink:hover{border-color:var(--cyan);color:#fff}
+.ilink svg{width:15px;height:15px;fill:currentColor}
+.credit{font-family:var(--mono);font-size:10.5px;color:var(--faint);letter-spacing:.06em;text-align:center;margin-top:12px}
+.credit a{color:var(--dim);text-decoration:none}.credit a:hover{color:#fff}
 .chip.btnchip{cursor:pointer;transition:all .15s}
 .chip.btnchip:hover{border-color:var(--cyan);color:#fff}
 .chip.demo{color:var(--violet);border-color:rgba(157,140,255,.4)}
@@ -230,6 +236,10 @@ td.fire{color:var(--fire)} td.size_down{color:var(--size)} td.block{color:var(--
     </div>
     <span class="chip" id="model">DREX · 128K</span>
     <span class="chip btnchip" id="keychip" title="Drex API key">API …</span>
+    <div class="links">
+      <a class="ilink" href="https://github.com/velesxbt/drex-night-desk" target="_blank" rel="noopener" title="Source on GitHub" aria-label="GitHub"><svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
+      <a class="ilink" href="https://x.com/velesxbt" target="_blank" rel="noopener" title="@velesxbt on X" aria-label="X"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+    </div>
   </header>
 
   <main>
@@ -360,6 +370,7 @@ Or drop a .txt file anywhere on this panel."></textarea>
       <small id="mnote">No key yet? Watch a recorded run first.</small>
       <button class="linkbtn" id="demobtn">TRY THE DEMO →</button>
     </div>
+    <div class="credit">Built by <a href="https://x.com/velesxbt" target="_blank" rel="noopener">@velesxbt</a> · <a href="https://github.com/velesxbt/drex-night-desk" target="_blank" rel="noopener">source on GitHub</a> · not affiliated with Nace AI</div>
   </div>
 </div>
 

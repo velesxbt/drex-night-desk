@@ -3,9 +3,11 @@
 **A quant desk that gates trading signals with [Drex](https://www.nace.ai/drex) by Nace AI.**
 It reads a full earnings call in one pass and decides - fire, size down, or block - in well under a second.
 
+[Live demo](https://night-desk-fvo7.onrender.com/) · [GitHub](https://github.com/velesxbt/drex-night-desk) · [X / @velesxbt](https://x.com/velesxbt) · [Get a Drex key](https://drex.nace.ai/invite/j8697dgz)
+
 ![Night Desk - a LULU long signal sized down after Drex reads the full Q2 FY2026 earnings call](docs/desk-full.png)
 
-**▶ Try it live:** `https://<your-app>.onrender.com` - no key needed for the demo. Want to run it on your own text? [Get a free Drex key](https://drex.nace.ai/invite/j8697dgz).
+**▶ Try it live: [night-desk-fvo7.onrender.com](https://night-desk-fvo7.onrender.com/)** - no key needed for the demo. Want to run it on your own text? [Get a free Drex key](https://drex.nace.ai/invite/j8697dgz).
 
 ---
 
@@ -80,8 +82,8 @@ You need Python 3.9+ (standard library only - nothing to install). Setting `DREX
 **macOS / Linux**
 
 ```bash
-git clone https://github.com/<you>/night-desk.git
-cd night-desk
+git clone https://github.com/velesxbt/drex-night-desk.git
+cd drex-night-desk
 export DREX_API_KEY="nace_sk_..."
 python3 server.py
 ```
@@ -91,8 +93,8 @@ Or double-click `run.command` - it asks for the key and starts the desk. (First 
 **Windows (PowerShell)**
 
 ```powershell
-git clone https://github.com/<you>/night-desk.git
-cd night-desk
+git clone https://github.com/velesxbt/drex-night-desk.git
+cd drex-night-desk
 $env:DREX_API_KEY = "nace_sk_..."
 python server.py
 ```
@@ -204,7 +206,7 @@ To change what the desk asks, edit the `questions` object in `runGate()` inside 
 ## Project structure
 
 ```
-night-desk/
+drex-night-desk/
 ├── desk.html                 the dashboard (single file)
 ├── server.py                 local server + Drex proxy (stdlib only)
 ├── run.command               macOS launcher
@@ -222,6 +224,10 @@ night-desk/
 - **Not trading advice.** Night Desk is a demo of a signal-gating workflow. Nothing here places orders, and no output should be read as a recommendation to buy or sell anything.
 - **Token counts.** The load meter estimates tokens at ~4 characters each before a run, then switches to the exact count Drex reports.
 - **Costs.** Each gate is one request, billed on input tokens. A full earnings call runs roughly 10-15K tokens. Check current pricing on [nace.ai/drex](https://www.nace.ai/drex).
+
+## Author
+
+Built by **Veles** - [@velesxbt](https://x.com/velesxbt) on X. Issues and PRs welcome on [GitHub](https://github.com/velesxbt/drex-night-desk).
 
 ## License
 
