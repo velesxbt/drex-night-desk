@@ -153,9 +153,64 @@ tr.new td{animation:flash 1.4s ease}
 @keyframes flash{from{background:rgba(88,199,255,.14)}to{background:transparent}}
 td.fire{color:var(--fire)} td.size_down{color:var(--size)} td.block{color:var(--block)}
 .empty{color:var(--faint);font-family:var(--mono);font-size:11px;padding:18px 14px}
+.chip.btnchip{cursor:pointer;transition:all .15s}
+.chip.btnchip:hover{border-color:var(--cyan);color:#fff}
+.chip.demo{color:var(--violet);border-color:rgba(157,140,255,.4)}
+.modal{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;background:rgba(3,5,8,.72);backdrop-filter:blur(6px)}
+.modal.show{display:flex}
+.mcard{width:min(560px,calc(100vw - 32px));max-height:calc(100vh - 32px);overflow:auto;background:linear-gradient(180deg,#101620,#0a0e13);border:1px solid var(--line2);border-radius:14px;
+  box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 1px rgba(88,199,255,.06);padding:26px 26px 22px;position:relative}
+.mcard .x{position:absolute;top:14px;right:14px;background:none;border:0;color:var(--dim);font-size:20px;cursor:pointer;line-height:1}
+.mcard .x:hover{color:#fff}
+.mkick{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--cyan);margin-bottom:10px}
+.mcard h2{font-size:22px;font-weight:700;letter-spacing:-.01em;margin-bottom:8px}
+.mcard p.lead{color:var(--dim);font-size:13.5px;line-height:1.55;margin-bottom:18px}
+.steps{list-style:none;counter-reset:s;display:flex;flex-direction:column;gap:12px;margin-bottom:18px}
+.steps li{counter-increment:s;display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:start;font-size:13.5px;line-height:1.5}
+.steps li::before{content:counter(s);font-family:var(--mono);font-size:12px;font-weight:700;width:28px;height:28px;border-radius:8px;display:grid;place-items:center;
+  background:rgba(88,199,255,.1);color:var(--cyan);border:1px solid rgba(88,199,255,.25)}
+.steps b{color:#fff;font-weight:600}
+.steps .sub{display:block;color:var(--dim);font-size:12px;margin-top:2px}
+.invite{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-radius:10px;margin:2px 0 4px;text-decoration:none;
+  background:linear-gradient(90deg,rgba(52,227,154,.14),rgba(88,199,255,.08));border:1px solid rgba(52,227,154,.35);color:var(--fire);font-family:var(--mono);font-size:12.5px}
+.invite:hover{border-color:var(--fire);color:#fff}
+.keyrow{display:flex;gap:8px;margin-top:4px}
+.keyrow input{flex:1;font-size:13px;padding:11px 12px}
+.mfoot{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+.mfoot small{color:var(--faint);font-size:11.5px;line-height:1.45}
+.linkbtn{background:none;border:0;color:var(--violet);font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;cursor:pointer;white-space:nowrap}
+.linkbtn:hover{color:#fff}
+.replay{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:var(--violet);border:1px solid rgba(157,140,255,.4);border-radius:4px;padding:2px 6px;margin-left:8px}
 .toast{position:fixed;right:18px;bottom:18px;max-width:420px;background:#1a0c10;border:1px solid rgba(255,93,108,.5);color:#ffd6db;
   font-family:var(--mono);font-size:11.5px;padding:12px 14px;border-radius:8px;opacity:0;transform:translateY(10px);transition:all .25s;pointer-events:none;white-space:pre-wrap}
 .toast.show{opacity:1;transform:none}
+.steps li>div{min-width:0}
+.invite span{flex:none}
+@media (max-width:900px){
+  body{overflow:auto;font-size:13px}
+  .app{height:auto;min-height:100vh;grid-template-rows:auto auto auto;padding:8px;gap:8px}
+  header{flex-wrap:wrap;padding:10px 12px;gap:8px 10px}
+  .brand span{display:none}
+  .clocks{display:none}
+  #model{display:none}
+  #keychip{margin-left:auto}
+  main{grid-template-columns:1fr;gap:8px}
+  .queue{max-height:190px}
+  .ctxhead{flex-wrap:wrap;gap:8px}
+  .ctxhead .ph{display:none}
+  .ctxwrap{min-height:210px}
+  .ctxactions .hint{display:none}
+  .decision{grid-template-columns:1fr}
+  .gate{border-right:0;border-bottom:1px solid var(--line)}
+  .verdict .v{font-size:28px}
+  .opt{grid-template-columns:82px 1fr 54px;gap:8px}
+  .tapebox{min-height:460px}
+  .blot{height:auto;max-height:320px}
+  table{min-width:900px}
+  .invite{font-size:11.5px;word-break:break-all}
+  .mcard{padding:22px 18px 18px}
+  .toast{left:12px;right:12px;bottom:12px;max-width:none}
+}
 ::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-thumb{background:#1c2530;border-radius:4px}
 </style>
 </head>
@@ -174,7 +229,7 @@ td.fire{color:var(--fire)} td.size_down{color:var(--size)} td.block{color:var(--
       <div class="clock"><small>KYIV</small><b id="kyiv">--:--:--</b></div>
     </div>
     <span class="chip" id="model">DREX · 128K</span>
-    <span class="chip" id="keychip">API …</span>
+    <span class="chip btnchip" id="keychip" title="Drex API key">API …</span>
   </header>
 
   <main>
@@ -288,6 +343,26 @@ Or drop a .txt file anywhere on this panel."></textarea>
 </div>
 <div class="toast" id="toast"></div>
 
+<div class="modal" id="keymodal" role="dialog" aria-modal="true" aria-labelledby="mtitle">
+  <div class="mcard">
+    <button class="x" id="mclose" aria-label="Close">×</button>
+    <div class="mkick">NIGHT DESK · POWERED BY DREX</div>
+    <h2 id="mtitle">Plug in your Drex key</h2>
+    <p class="lead">Night Desk runs on <b>Drex</b>, Nace AI's decision model - it reads a full earnings call (up to 128K tokens) and decides fire, size down or block in under a second. Bring your own free key to run it live.</p>
+    <ol class="steps">
+      <li><div><b>Sign up with the invite link</b><span class="sub">Free account, comes with signup credit.</span>
+        <a class="invite" id="invitelink" href="https://drex.nace.ai/invite/j8697dgz" target="_blank" rel="noopener">drex.nace.ai/invite/j8697dgz <span>OPEN ↗</span></a></div></li>
+      <li><div><b>Create an API key</b><span class="sub">In the Drex console, open <b>API Keys</b> in the left menu and create a key. It starts with <code>nace_sk_</code>.</span></div></li>
+      <li><div><b>Paste it here</b><span class="sub">Stored only in this browser. It's sent with each run and never saved on the server.</span>
+        <div class="keyrow"><input id="keyin" type="password" placeholder="nace_sk_..." autocomplete="off" spellcheck="false"><button class="btn go" id="keysave">Save</button></div></div></li>
+    </ol>
+    <div class="mfoot">
+      <small id="mnote">No key yet? Watch a recorded run first.</small>
+      <button class="linkbtn" id="demobtn">TRY THE DEMO →</button>
+    </div>
+  </div>
+</div>
+
 <script>
 const $ = s => document.querySelector(s);
 const fmt = n => n.toLocaleString('en-US');
@@ -319,11 +394,42 @@ function tick(){
 setInterval(tick, 1000); tick();
 
 // ---------- status ----------
+let SERVER_KEY = false, DEMO = false;
+const store = {
+  get(){ try { return localStorage.getItem('drex_key') || ''; } catch(e){ return store._m || ''; } },
+  set(v){ store._m = v; try { v ? localStorage.setItem('drex_key', v) : localStorage.removeItem('drex_key'); } catch(e){} }
+};
+const hasKey = () => !!store.get() || SERVER_KEY;
+function keyChip(){
+  const c = $('#keychip');
+  if (store.get()) { c.textContent = 'YOUR KEY · LIVE'; c.className = 'chip btnchip ok'; }
+  else if (SERVER_KEY) { c.textContent = 'API KEY · LIVE'; c.className = 'chip btnchip ok'; }
+  else if (DEMO) { c.textContent = 'DEMO · ADD KEY'; c.className = 'chip btnchip demo'; }
+  else { c.textContent = 'ADD API KEY'; c.className = 'chip btnchip bad'; }
+}
 fetch('/api/status').then(r=>r.json()).then(s=>{
-  $('#keychip').textContent = s.key ? 'API KEY · LIVE' : 'NO API KEY';
-  $('#keychip').className = 'chip ' + (s.key ? 'ok' : 'bad');
+  SERVER_KEY = !!s.server_key;
+  if (s.invite) { $('#invitelink').href = s.invite; $('#invitelink').firstChild.textContent = s.invite.replace(/^https?:\/\//,'') + ' '; }
   $('#model').textContent = (s.model || 'drex').toUpperCase() + ' · 128K';
-}).catch(()=>{ $('#keychip').textContent='SERVER OFFLINE'; $('#keychip').className='chip bad'; });
+  keyChip();
+  if (!hasKey()) openModal();
+}).catch(()=>{ $('#keychip').textContent='SERVER OFFLINE'; $('#keychip').className='chip btnchip bad'; });
+
+// ---------- key modal ----------
+function openModal(){ $('#keyin').value = store.get(); $('#mnote').textContent = store.get() ? 'Clear the field and save to remove your key.' : 'No key yet? Watch a recorded run first.'; $('#keymodal').classList.add('show'); setTimeout(()=>$('#keyin').focus(), 50); }
+function closeModal(){ $('#keymodal').classList.remove('show'); }
+$('#keychip').onclick = openModal;
+$('#mclose').onclick = closeModal;
+$('#keymodal').addEventListener('click', e => { if (e.target.id === 'keymodal') closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+$('#keysave').onclick = () => {
+  const v = $('#keyin').value.trim();
+  if (v && !/^nace_sk_/.test(v)) { toast('That doesn\'t look like a Drex key - it should start with nace_sk_'); return; }
+  store.set(v); DEMO = false; keyChip(); closeModal();
+  toast(v ? 'Key saved in this browser. Paste a transcript and hit Run Gate.' : 'Key removed.', !!v);
+};
+$('#keyin').addEventListener('keydown', e => { if (e.key === 'Enter') $('#keysave').click(); });
+$('#demobtn').onclick = () => { closeModal(); startDemo(); };
 
 // ---------- queue ----------
 function renderQueue(){
@@ -375,12 +481,14 @@ $('#ctxwrap').addEventListener('drop', e=>{ e.preventDefault(); [...e.dataTransf
 
 // ---------- api ----------
 async function decide(payload){
-  const r = await fetch('/api/decide',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+  const headers = {'Content-Type':'application/json'}; const k = store.get(); if (k) headers['X-Drex-Key'] = k;
+  const r = await fetch('/api/decide',{method:'POST',headers,body:JSON.stringify(payload)});
+  if (r.status === 401 && !SERVER_KEY) setTimeout(openModal, 400);
   const j = await r.json().catch(()=>({error:'Bad response from local server'}));
   if(!r.ok || j.error) throw new Error((j.error||('HTTP '+r.status)) + (j.detail ? '\n'+j.detail : ''));
   return j;
 }
-function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove('show'),7000); }
+function toast(msg, ok){ const t=$('#toast'); t.textContent=msg; t.style.background = ok ? '#0b1a13' : ''; t.style.borderColor = ok ? 'rgba(52,227,154,.5)' : ''; t.style.color = ok ? '#c9f7e2' : ''; t.classList.add('show'); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove('show'),7000); }
 
 // ---------- gate ----------
 function resetGate(){
@@ -396,6 +504,10 @@ const LABEL = {fire:'FIRE', size_down:'SIZE DOWN', block:'BLOCK'};
 
 async function runGate(){
   const ctx = $('#ctx').value.trim();
+  if(!hasKey()){
+    if(DEMO && sel.tk==='LULU'){ return replayGate(); }
+    openModal(); return;
+  }
   if(!ctx){ toast('Paste the earnings call or other context first.'); return; }
   sel.size = parseFloat($('#csz').value)||sel.size;
   resetGate();
@@ -457,7 +569,7 @@ function showGate(res){
   const exec = execMult!=null ? sel.size*execMult : null;
   $('#sexec').textContent = exec!=null ? exec.toFixed(2)+'x' : '—';
   $('#sexec').style.color = COLORS[choice] || '';
-  $('#gstate').textContent = 'DONE · ' + (res.model||'').toUpperCase();
+  $('#gstate').innerHTML = 'DONE · ' + (res.model||'').toUpperCase() + (res._replay ? '<span class="replay">REPLAY</span>' : '');
 
   // guidance
   let gd = '—';
@@ -505,6 +617,10 @@ $('#heads').addEventListener('input', updHeads);
 
 async function tagTape(){
   const hs = heads(); if(!hs.length){ toast('Paste some headlines first, one per line.'); return; }
+  if(!hasKey()){
+    if(DEMO && sel.tk==='LULU'){ return replayTape(hs); }
+    openModal(); return;
+  }
   $('#tagbtn').disabled = true; $('#tape').innerHTML=''; let nb=0,nr=0,nn=0, msTotal=0;
   const dir = sel.side==='LONG' ? 'long' : 'short';
   const CHUNK = 20;
@@ -532,6 +648,67 @@ async function tagTape(){
   finally{ $('#tagbtn').disabled=false; }
 }
 $('#tagbtn').onclick = tagTape;
+
+// ---------- demo: replay of a real recorded run ----------
+// Recorded with drex-v1.5 on the full Lululemon Q2 FY2026 earnings call (Sept 3, 2026).
+const DEMO_GATE = {
+  model:'drex-v1.5', _replay:true, evaluation_time_ms:143, usage:{input_tokens:11326}, request_id:'replay_lulu_q2fy26',
+  answers:{
+    gate:{type:'choice', choice:'size_down', confidence:0.517, probabilities:{fire:0.045, size_down:0.678, block:0.277}},
+    guidance:{type:'choice', choice:'lowered', probabilities:{raised:0.0003, maintained:0.0005, lowered:0.999, not_given:0.0002}},
+    one_off:{type:'noul', noul:0.987},
+    tone:{type:'score', score:1.09, legend:['Very cautious','Cautious','Neutral','Confident','Very confident']}
+  }
+};
+const DEMO_HEADS = [
+  ['Lululemon Q2 adjusted EPS $2.92 vs $1.82 consensus','bearish',0.68],
+  ['Lululemon cuts FY26 EPS guidance to $9.48-$9.73','bearish',0.97],
+  ['Q2 revenue $2.4B misses $2.46B estimate','bearish',0.86],
+  ['Tariff refunds added $0.86 per share to Q2 EPS','bearish',0.65],
+  ['Lululemon operating margin down 190 bps to 18.8%','bearish',0.94],
+  ['Oil steady ahead of weekly inventory data','noise',0.98]
+];
+const DEMO_CTX = `REPLAY MODE - recorded Drex run
+
+Signal: LULU long, 1.00x, pre-market, the morning after Lululemon's Q2 FY2026 earnings call (Sept 3, 2026).
+Headline: adjusted EPS $2.92 vs $1.82 consensus.
+
+In the recorded run, Drex read the full earnings call transcript (11,326 tokens) in one pass.
+The transcript isn't bundled here - it's copyrighted by its publisher.
+
+Hit RUN GATE to replay what Drex decided.
+Then TAG TAPE to replay the headline tagging.
+
+To run Drex live on your own text: add your key (top right), paste any earnings call, run.`;
+function startDemo(){
+  DEMO = true; keyChip();
+  select(1);
+  $('#ctx').value = DEMO_CTX; updTokens();
+  $('#heads').value = DEMO_HEADS.map(h=>h[0]).join('\n'); updHeads();
+  toast('Demo loaded - hit RUN GATE to replay a real Drex decision.', true);
+}
+async function replayGate(){
+  resetGate(); $('#runbtn').disabled = true; $('#ctxwrap').classList.add('reading');
+  $('#gstate').textContent = 'READING 11,326 TOKENS'; $('#verdict').textContent = 'READING…';
+  await new Promise(r=>setTimeout(r, 900));
+  $('#runbtn').disabled = false; $('#ctxwrap').classList.remove('reading');
+  showGate(DEMO_GATE);
+}
+async function replayTape(hs){
+  $('#tagbtn').disabled = true; $('#tape').innerHTML=''; let nb=0,nr=0,nn=0;
+  await new Promise(r=>setTimeout(r, 350));
+  hs.forEach((h,j)=>{
+    const rec = DEMO_HEADS.find(d=>d[0]===h);
+    if(!rec) return;
+    const [,c,p] = rec; c==='bullish'?nb++:c==='bearish'?nr++:nn++;
+    const row = document.createElement('div'); row.className='hl'; row.style.animationDelay=(j*40)+'ms';
+    row.innerHTML = `<span class="tag ${c}">${c.toUpperCase()}</span><span>${h.replace(/</g,'&lt;')}</span><span class="pp">${Math.round(p*100)}%</span>`;
+    $('#tape').appendChild(row);
+  });
+  if(!$('#tape').children.length) $('#tape').innerHTML = '<div class="empty">The demo only has the recorded LULU headlines. Add your key to tag your own.</div>';
+  $('#nb').textContent=nb; $('#nr').textContent=nr; $('#nn').textContent=nn; $('#tms').textContent='14';
+  $('#tagbtn').disabled = false;
+}
 
 select(1);
 </script>
