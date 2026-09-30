@@ -1,0 +1,17 @@
+# One-click deploy on Render: New + > Blueprint > pick this repo.
+services:
+  - type: web
+    name: night-desk
+    runtime: python
+    plan: free
+    buildCommand: "echo 'no dependencies - stdlib only'"
+    startCommand: "python server.py"
+    healthCheckPath: /healthz
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.4"
+      - key: DREX_MODEL
+        value: drex-v1.5
+      - key: RATE_LIMIT_PER_MIN
+        value: "30"
+      # Do NOT set DREX_API_KEY here - visitors bring their own key.

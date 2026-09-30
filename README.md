@@ -1,15 +1,17 @@
 # Night Desk
 
-**A local quant desk that gates trading signals with [Drex](https://www.nace.ai/drex) by Nace AI.**
+**A quant desk that gates trading signals with [Drex](https://www.nace.ai/drex) by Nace AI.**
 It reads a full earnings call in one pass and decides - fire, size down, or block - in well under a second.
 
 ![Night Desk - a LULU long signal sized down after Drex reads the full Q2 FY2026 earnings call](docs/desk-full.png)
+
+**▶ Try it live:** `https://<your-app>.onrender.com` - no key needed for the demo. Want to run it on your own text? [Get a free Drex key](https://drex.nace.ai/invite/j8697dgz).
 
 ---
 
 ## Why
 
-A momentum model sees a headline beat and fires a long. The headline doesn't tell it that the beat came from a one-off tax refund, or that the CFO cut full-year guidance forty minutes into the Q&A.
+A momentum model sees a headline beat and fires a long. The headline doesn't tell it that the beat came from a one-off tariff refund, or that the CFO cut full-year guidance forty minutes into the Q&A.
 
 Night Desk puts a decision model between the signal and execution. Before an order goes out, [Drex](https://www.nace.ai/drex) reads everything the desk has on the name - the whole call, the press release, prior quarters - and answers one question: **what should happen to this signal?**
 
@@ -61,9 +63,19 @@ The desk maps the verdict to an execution size: **fire** = 1.0x, **size down** =
 
 **Blotter** - every decision with time, verdict, confidence, execution size, token count, model time and request ID.
 
+## Get a Drex key
+
+1. Sign up with the invite link: **[drex.nace.ai/invite/j8697dgz](https://drex.nace.ai/invite/j8697dgz)** - free, with signup credit.
+2. In the Drex console, open **API Keys** and create a key (it starts with `nace_sk_`).
+3. Paste it into Night Desk. The first time you open the desk without a key, it walks you through this:
+
+<p align="center"><img src="docs/key-modal.png" width="520" alt="Key modal - sign up with the invite link, create an API key, paste it here"></p>
+
+Your key is stored only in your browser and sent with each run. The server forwards it to Drex and never stores or logs it. No key yet? Hit **Try the demo** - it replays the real LULU run above.
+
 ## Quick start
 
-You need Python 3.9+ (standard library only - nothing to install) and a Drex API key. Sign up at [drex.nace.ai](https://drex.nace.ai), then create a key under **API Keys**.
+You need Python 3.9+ (standard library only - nothing to install). Setting `DREX_API_KEY` is optional - without it, the desk asks for a key in the browser.
 
 **macOS / Linux**
 
@@ -87,7 +99,7 @@ python server.py
 
 Or run `.\run.ps1`.
 
-The desk opens at **http://localhost:8765**. The header chip reads `API KEY · LIVE` when the key is set.
+The desk opens at **http://localhost:8765**. The key chip in the top right reads `LIVE` once a key is set - click it any time to change or remove your key.
 
 ## Walkthrough
 
@@ -116,6 +128,28 @@ Keep local transcripts in a `transcripts/` folder - it's git-ignored.
 | **SNOW** Q2 FY2027 (Sept 2, 2026) | Clean beat-and-raise: EPS $0.62 vs $0.45, product revenue +37%, FY guidance raised. Stock rose ~22% after hours. |
 | **LULU**, eight calls (Aug 2024 → Sept 2026) | Around 85K tokens - past Jev's 64K request limit, inside Drex's 128K window. |
 
+## Deploy
+
+Night Desk is one Python file with no dependencies, so it runs on any host that can start `python server.py`. When the platform sets `PORT`, the server binds to `0.0.0.0` and skips opening a browser.
+
+**Render (free tier, one click)**
+
+1. Push this repo to GitHub.
+2. On [render.com](https://render.com): **New + → Blueprint**, pick the repo. It reads [`render.yaml`](render.yaml).
+3. Deploy. Your desk is live at `https://<name>.onrender.com`.
+
+Free instances sleep when idle - the first visit after a while takes ~30 seconds to wake up.
+
+**Railway / Fly.io / anything else** - start command `python server.py`, no build step. Health check: `/healthz`.
+
+> **Don't set `DREX_API_KEY` on a public deployment.** It becomes the fallback for every visitor without a key, and your credits go with it. Leave it unset and visitors bring their own.
+
+Built-in guardrails for public hosting:
+
+- Per-IP rate limit (`RATE_LIMIT_PER_MIN`, default 30).
+- Request size cap (`MAX_BODY_BYTES`, default ~2 MB - roughly Drex's 128K-token window).
+- No server-side storage. Nothing about a visitor's key or text is written to disk or logs.
+
 ## How it works
 
 ```
@@ -125,7 +159,7 @@ Keep local transcripts in a `transcripts/` folder - it's git-ignored.
 ```
 
 - `desk.html` is the whole UI - a single file, no build step, no framework.
-- `server.py` serves it and forwards decision requests to Drex. The API key lives only in the server process, so it never reaches the browser.
+- `server.py` serves it and forwards decision requests to Drex, with the visitor's key from the `X-Drex-Key` header (or `DREX_API_KEY` as a fallback when running locally).
 - Every gate is a single request to `POST /v1/systemone`:
 
 ```json
@@ -157,10 +191,14 @@ To change what the desk asks, edit the `questions` object in `runGate()` inside 
 
 | Variable | Default | |
 |---|---|---|
-| `DREX_API_KEY` | - | Required. Your Drex key. |
+| `DREX_API_KEY` | - | Optional fallback key. Handy locally - **leave unset when public**. |
 | `DREX_MODEL` | `drex-v1.5` | Model name sent with each request. |
 | `DREX_BASE` | `https://drex.nace.ai` | API base URL. |
-| `DREX_DESK_PORT` | `8765` | Local port. |
+| `PORT` | - | Set by hosting platforms. When present, binds to `0.0.0.0`. |
+| `DREX_DESK_PORT` | `8765` | Local port when `PORT` isn't set. |
+| `DREX_INVITE_URL` | invite link | Signup link shown in the key modal. |
+| `RATE_LIMIT_PER_MIN` | `30` | Requests per IP per minute. `0` disables it. |
+| `MAX_BODY_BYTES` | `2000000` | Largest request the server accepts. |
 | `DREX_NO_BROWSER` | - | Set to `1` to skip opening a browser tab on start. |
 
 ## Project structure
@@ -171,6 +209,7 @@ night-desk/
 ├── server.py                 local server + Drex proxy (stdlib only)
 ├── run.command               macOS launcher
 ├── run.ps1                   Windows launcher
+├── render.yaml               one-click Render deploy
 ├── examples/                 sample headline tapes
 ├── tools/
 │   └── extract-transcript.js console helper for transcript pages
