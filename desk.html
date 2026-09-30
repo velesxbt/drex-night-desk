@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Night Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06080b; --panel:#0b0f14; --panel2:#0f141b; --line:#1a222c; --line2:#243040;
+  --txt:#d7dee7; --dim:#7a8796; --faint:#4a5563;
+  --fire:#34e39a; --size:#f5b544; --block:#ff5d6c; --cyan:#58c7ff; --violet:#9d8cff;
+  --mono:'JetBrains Mono',ui-monospace,monospace; --sans:'Inter',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--txt);font-family:var(--sans);font-size:13px;overflow:hidden;
+  background-image:
+    radial-gradient(1200px 600px at 55% -10%, rgba(88,199,255,.07), transparent 60%),
+    radial-gradient(900px 500px at 100% 110%, rgba(52,227,154,.05), transparent 60%),
+    linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+  background-size:auto,auto,32px 32px,32px 32px;}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+.app{display:grid;grid-template-rows:52px 1fr 190px;height:100vh;gap:10px;padding:10px}
+.mono{font-family:var(--mono)}
+.panel{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:10px;position:relative;overflow:hidden}
+.ph{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--line);
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.ph b{color:var(--txt);font-weight:500}
+.dot{width:6px;height:6px;border-radius:50%;display:inline-block;margin-right:8px;background:var(--fire);box-shadow:0 0 10px var(--fire)}
+
+/* header */
+header{display:flex;align-items:center;gap:22px;padding:0 16px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:26px;height:26px;border-radius:7px;background:conic-gradient(from 200deg,var(--fire),var(--cyan),var(--violet),var(--fire));
+  box-shadow:0 0 22px rgba(52,227,154,.35);position:relative}
+.logo::after{content:"";position:absolute;inset:5px;border-radius:4px;background:var(--bg)}
+.brand h1{font-size:14px;font-weight:700;letter-spacing:.22em}
+.brand span{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:.12em}
+.clocks{display:flex;gap:18px;margin-left:auto}
+.clock{font-family:var(--mono);text-align:right}
+.clock small{display:block;font-size:9.5px;color:var(--faint);letter-spacing:.16em}
+.clock b{font-size:15px;font-weight:500;color:var(--txt)}
+.chip{font-family:var(--mono);font-size:10.5px;padding:6px 10px;border:1px solid var(--line2);border-radius:999px;color:var(--dim);letter-spacing:.08em;white-space:nowrap}
+.chip.ok{color:var(--fire);border-color:rgba(52,227,154,.35)}
+.chip.bad{color:var(--block);border-color:rgba(255,93,108,.35)}
+.session{color:var(--size);border-color:rgba(245,181,68,.35)}
+
+/* main grid */
+main{display:grid;grid-template-columns:270px 1fr 380px;gap:10px;min-height:0}
+.col{display:flex;flex-direction:column;gap:10px;min-height:0}
+
+/* queue */
+.queue{flex:1;overflow:auto}
+.sig{display:grid;grid-template-columns:1fr auto;gap:4px 8px;padding:12px 14px;border-bottom:1px solid var(--line);cursor:pointer;transition:background .2s}
+.sig:hover{background:rgba(255,255,255,.02)}
+.sig.on{background:linear-gradient(90deg,rgba(88,199,255,.09),transparent);box-shadow:inset 2px 0 0 var(--cyan)}
+.sig .tk{font-family:var(--mono);font-size:15px;font-weight:700;letter-spacing:.04em}
+.sig .side{font-family:var(--mono);font-size:10.5px;color:var(--fire);align-self:center;text-align:right}
+.sig .side.short{color:var(--block)}
+.sig .meta{grid-column:1/-1;font-family:var(--mono);font-size:10.5px;color:var(--dim);display:flex;justify-content:space-between}
+.sig .st{font-family:var(--mono);font-size:10px;letter-spacing:.1em}
+.st.pending{color:var(--faint)} .st.fire{color:var(--fire)} .st.size_down{color:var(--size)} .st.block{color:var(--block)}
+.addsig{display:grid;grid-template-columns:1fr 70px 56px;gap:6px;padding:10px 12px;border-top:1px solid var(--line)}
+input,select,textarea{min-width:0;width:100%;background:#070a0e;border:1px solid var(--line2);color:var(--txt);border-radius:6px;font-family:var(--mono);font-size:11.5px;padding:7px 8px;outline:none}
+input:focus,textarea:focus,select:focus{border-color:var(--cyan)}
+.btn{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;border-radius:7px;border:1px solid var(--line2);
+  background:#0c1117;color:var(--txt);padding:8px 12px;cursor:pointer;transition:all .15s}
+.btn:hover{border-color:var(--cyan);color:#fff}
+.btn.go{background:linear-gradient(180deg,#1de08c,#12b772);color:#03140c;border:0;font-weight:700;padding:11px 20px;box-shadow:0 0 24px rgba(52,227,154,.25)}
+.btn.go:hover{filter:brightness(1.1)}
+.btn:disabled{opacity:.45;cursor:default}
+
+/* center */
+.ctxhead{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--line)}
+.ctxhead .big{font-family:var(--mono);font-size:22px;font-weight:700;letter-spacing:.03em}
+.ctxhead .pill{font-family:var(--mono);font-size:11px;padding:4px 9px;border-radius:5px;background:rgba(52,227,154,.1);color:var(--fire)}
+.ctxhead input{width:70px;flex:none}
+.ctxhead .sp{flex:1}
+.ctxwrap{position:relative;flex:1;min-height:0;display:flex}
+#ctx{flex:1;resize:none;border:0;border-radius:0;background:transparent;padding:14px;font-size:11.5px;line-height:1.55;color:#aeb9c6}
+#ctx::placeholder{color:var(--faint)}
+.scan{position:absolute;left:0;right:0;height:70px;top:-70px;pointer-events:none;opacity:0;
+  background:linear-gradient(180deg,transparent,rgba(88,199,255,.14),rgba(88,199,255,.35) 96%,transparent);border-bottom:1px solid rgba(88,199,255,.7)}
+.reading .scan{opacity:1;animation:scan 1.1s linear infinite}
+@keyframes scan{from{top:-70px}to{top:100%}}
+.meter{padding:10px 14px 12px;border-top:1px solid var(--line)}
+.meterrow{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10.5px;color:var(--dim);margin-bottom:7px}
+.meterrow b{color:var(--txt);font-weight:500}
+.bar{height:8px;border-radius:5px;background:#0a0e13;border:1px solid var(--line);position:relative;overflow:visible}
+.bar i{position:absolute;left:0;top:0;bottom:0;border-radius:5px;background:linear-gradient(90deg,var(--cyan),var(--fire));width:0;transition:width .5s}
+.bar i.over64{background:linear-gradient(90deg,var(--cyan),var(--fire) 55%,var(--violet))}
+.mark{position:absolute;top:-4px;bottom:-4px;width:1px;background:var(--size)}
+.mark span{position:absolute;top:14px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:9px;color:var(--size);white-space:nowrap}
+.ctxactions{display:flex;gap:8px;align-items:center;padding:12px 14px;border-top:1px solid var(--line)}
+.ctxactions .hint{font-family:var(--mono);font-size:10px;color:var(--faint);margin-left:auto;margin-right:10px}
+
+/* decision */
+.decision{display:grid;grid-template-columns:1.25fr 1fr;min-height:250px}
+.gate{padding:16px 18px;border-right:1px solid var(--line)}
+.verdict{display:flex;align-items:baseline;gap:14px;margin-bottom:16px;min-height:44px}
+.verdict .v{font-family:var(--mono);font-size:34px;font-weight:700;letter-spacing:.06em;color:var(--faint);transition:color .3s}
+.verdict .c{font-family:var(--mono);font-size:12px;color:var(--dim)}
+.opt{display:grid;grid-template-columns:96px 1fr 62px;align-items:center;gap:12px;margin:11px 0}
+.opt .n{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--dim)}
+.opt .t{height:22px;background:#080b10;border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.opt .f{height:100%;width:0;transition:width .9s cubic-bezier(.2,.8,.2,1)}
+.opt.fire .f{background:linear-gradient(90deg,rgba(52,227,154,.25),var(--fire))}
+.opt.size_down .f{background:linear-gradient(90deg,rgba(245,181,68,.25),var(--size))}
+.opt.block .f{background:linear-gradient(90deg,rgba(255,93,108,.25),var(--block))}
+.opt .p{font-family:var(--mono);font-size:14px;text-align:right}
+.opt.win .n{color:var(--txt)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px}
+.stat{border:1px solid var(--line);border-radius:7px;padding:9px 10px;background:rgba(0,0,0,.2)}
+.stat small{display:block;font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--faint);margin-bottom:4px}
+.stat b{font-family:var(--mono);font-size:16px;font-weight:500}
+.flags{padding:16px 18px;display:flex;flex-direction:column;gap:14px}
+.flag small{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:var(--faint);margin-bottom:6px}
+.flag .row{display:flex;justify-content:space-between;align-items:baseline}
+.flag .row b{font-family:var(--mono);font-size:15px;font-weight:500}
+.flag .row span{font-family:var(--mono);font-size:11px;color:var(--dim)}
+.seg{display:flex;gap:3px;margin-top:7px}
+.seg i{flex:1;height:6px;border-radius:2px;background:#111820;transition:background .5s}
+.gauge{position:relative;height:6px;border-radius:3px;margin-top:9px;background:linear-gradient(90deg,var(--block),var(--size) 50%,var(--fire))}
+.gauge em{position:absolute;top:-5px;width:3px;height:16px;border-radius:2px;background:#fff;box-shadow:0 0 10px #fff;left:50%;transition:left .9s cubic-bezier(.2,.8,.2,1);opacity:0}
+
+/* tape */
+.tapebox{display:flex;flex-direction:column;flex:1;min-height:0}
+#heads{width:auto;height:120px;resize:none;margin:10px 12px 0;line-height:1.5}
+.tapeact{display:flex;gap:8px;padding:10px 12px;border-bottom:1px solid var(--line);align-items:center}
+.tapeact .cnt{font-family:var(--mono);font-size:10.5px;color:var(--dim);margin-left:auto}
+.tape{flex:1;overflow:auto}
+.hl{display:grid;grid-template-columns:62px 1fr 40px;gap:10px;align-items:center;padding:8px 12px;border-bottom:1px solid var(--line);font-size:12px;animation:in .35s ease both}
+@keyframes in{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:none}}
+.tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-align:center;padding:3px 0;border-radius:4px}
+.tag.bullish{background:rgba(52,227,154,.12);color:var(--fire)}
+.tag.bearish{background:rgba(255,93,108,.12);color:var(--block)}
+.tag.noise{background:rgba(122,135,150,.12);color:var(--dim)}
+.hl .pp{font-family:var(--mono);font-size:10.5px;color:var(--dim);text-align:right}
+.tapesum{display:flex;gap:6px;padding:10px 12px;border-top:1px solid var(--line)}
+.tapesum div{flex:1;text-align:center;font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:.1em}
+.tapesum b{display:block;font-size:18px;font-weight:500;margin-top:2px}
+
+/* blotter */
+.blot{overflow:auto;height:calc(100% - 38px)}
+table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:11.5px}
+th{position:sticky;top:0;background:var(--panel2);text-align:left;font-weight:400;color:var(--faint);font-size:9.5px;letter-spacing:.14em;padding:8px 14px;border-bottom:1px solid var(--line)}
+td{padding:7px 14px;border-bottom:1px solid rgba(26,34,44,.6);color:#aeb9c6}
+tr.new td{animation:flash 1.4s ease}
+@keyframes flash{from{background:rgba(88,199,255,.14)}to{background:transparent}}
+td.fire{color:var(--fire)} td.size_down{color:var(--size)} td.block{color:var(--block)}
+.empty{color:var(--faint);font-family:var(--mono);font-size:11px;padding:18px 14px}
+.toast{position:fixed;right:18px;bottom:18px;max-width:420px;background:#1a0c10;border:1px solid rgba(255,93,108,.5);color:#ffd6db;
+  font-family:var(--mono);font-size:11.5px;padding:12px 14px;border-radius:8px;opacity:0;transform:translateY(10px);transition:all .25s;pointer-events:none;white-space:pre-wrap}
+.toast.show{opacity:1;transform:none}
+::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-thumb{background:#1c2530;border-radius:4px}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="panel">
+    <div class="brand">
+      <div class="logo"></div>
+      <div><h1>NIGHT DESK</h1><span>SIGNAL GATE · DECISIONS BY DREX</span></div>
+    </div>
+    <span class="chip session" id="session">PRE-MARKET</span>
+    <div class="clocks">
+      <div class="clock"><small>NEW YORK</small><b id="ny">--:--:--</b></div>
+      <div class="clock"><small>LONDON</small><b id="ldn">--:--:--</b></div>
+      <div class="clock"><small>KYIV</small><b id="kyiv">--:--:--</b></div>
+    </div>
+    <span class="chip" id="model">DREX · 128K</span>
+    <span class="chip" id="keychip">API …</span>
+  </header>
+
+  <main>
+    <!-- LEFT: signal queue -->
+    <section class="col">
+      <div class="panel" style="flex:1;display:flex;flex-direction:column;min-height:0">
+        <div class="ph"><span><span class="dot"></span>Signal queue</span><b id="qcount">0</b></div>
+        <div class="queue" id="queue"></div>
+        <div class="addsig">
+          <input id="ntk" placeholder="TICKER" maxlength="8">
+          <select id="nside"><option>LONG</option><option>SHORT</option></select>
+          <input id="nsz" value="1.0" title="size multiplier">
+          <input id="nstrat" placeholder="strategy (e.g. EARN-MOM)" style="grid-column:1/3">
+          <button class="btn" id="addbtn">Add</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- CENTER: context + gate -->
+    <section class="col">
+      <div class="panel" style="flex:1;display:flex;flex-direction:column;min-height:0">
+        <div class="ctxhead">
+          <span class="big" id="ctk">—</span>
+          <span class="pill" id="cside">LONG</span>
+          <span class="mono" style="color:var(--dim);font-size:11px">SIZE</span>
+          <input id="csz" value="1.0">
+          <span class="mono" style="color:var(--dim);font-size:11px" id="cstrat"></span>
+          <span class="sp"></span>
+          <span class="ph" style="border:0;padding:0">Context · full earnings call, filings, notes</span>
+        </div>
+        <div class="ctxwrap" id="ctxwrap">
+          <textarea id="ctx" spellcheck="false" placeholder="Paste the full earnings call transcript here - prepared remarks and all of Q&amp;A.
+Add the press release, last quarter's call, 10-Q MD&amp;A... Drex reads up to 128K tokens in one pass.
+
+Or drop a .txt file anywhere on this panel."></textarea>
+          <div class="scan"></div>
+        </div>
+        <div class="meter">
+          <div class="meterrow"><span>CONTEXT LOAD</span><span><b id="tok">0</b> / 128,000 tokens <span id="tokkind">est.</span></span></div>
+          <div class="bar"><i id="tokbar"></i><div class="mark" style="left:50%"><span>64K · JEV LIMIT</span></div></div>
+        </div>
+        <div class="ctxactions" style="margin-top:8px">
+          <input type="file" id="file" accept=".txt,.md,.csv,.json" hidden>
+          <button class="btn" id="loadbtn">Load file</button>
+          <button class="btn" id="clearbtn">Clear</button>
+          <span class="hint">CTRL + ENTER</span>
+          <button class="btn go" id="runbtn">Run gate</button>
+        </div>
+      </div>
+
+      <div class="panel decision">
+        <div class="gate">
+          <div class="ph" style="padding:0 0 12px;border:0"><span>Gate decision</span><span id="gstate">IDLE</span></div>
+          <div class="verdict"><span class="v" id="verdict">AWAITING</span><span class="c" id="vconf"></span></div>
+          <div class="opt fire" data-k="fire"><span class="n">FIRE</span><div class="t"><div class="f"></div></div><span class="p">—</span></div>
+          <div class="opt size_down" data-k="size_down"><span class="n">SIZE DOWN</span><div class="t"><div class="f"></div></div><span class="p">—</span></div>
+          <div class="opt block" data-k="block"><span class="n">BLOCK</span><div class="t"><div class="f"></div></div><span class="p">—</span></div>
+          <div class="stats">
+            <div class="stat"><small>MODEL TIME</small><b id="sms">—</b></div>
+            <div class="stat"><small>TOKENS READ</small><b id="stok">—</b></div>
+            <div class="stat"><small>EXEC SIZE</small><b id="sexec">—</b></div>
+          </div>
+        </div>
+        <div class="flags">
+          <div class="ph" style="padding:0;border:0"><span>Risk read · same pass</span></div>
+          <div class="flag">
+            <small>FORWARD GUIDANCE</small>
+            <div class="row"><b id="gdv">—</b><span id="gdp"></span></div>
+            <div class="seg" id="gdseg"><i></i><i></i><i></i><i></i></div>
+          </div>
+          <div class="flag">
+            <small>BEAT DRIVEN BY ONE-OFF ITEMS</small>
+            <div class="row"><b id="oov">—</b><span id="oop"></span></div>
+          </div>
+          <div class="flag">
+            <small>MANAGEMENT TONE</small>
+            <div class="row"><b id="tnv">—</b><span id="tnp"></span></div>
+            <div class="gauge"><em id="tng"></em></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT: headline tape -->
+    <section class="col">
+      <div class="panel tapebox">
+        <div class="ph"><span><span class="dot" style="background:var(--cyan);box-shadow:0 0 10px var(--cyan)"></span>Pre-market tape</span><b id="tapeTk">—</b></div>
+        <textarea id="heads" spellcheck="false" placeholder="Paste headlines, one per line."></textarea>
+        <div class="tapeact"><button class="btn" id="tagbtn">Tag tape</button><span class="cnt" id="hcount">0 headlines</span></div>
+        <div class="tape" id="tape"><div class="empty">Tagged headlines appear here - bullish, bearish or noise for the selected signal.</div></div>
+        <div class="tapesum">
+          <div>BULLISH<b id="nb" style="color:var(--fire)">0</b></div>
+          <div>BEARISH<b id="nr" style="color:var(--block)">0</b></div>
+          <div>NOISE<b id="nn" style="color:var(--dim)">0</b></div>
+          <div>MS<b id="tms">—</b></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <section class="panel">
+    <div class="ph"><span>Blotter</span><span id="spend">0 decisions</span></div>
+    <div class="blot">
+      <table>
+        <thead><tr><th>TIME NY</th><th>TICKER</th><th>SIDE</th><th>SIGNAL</th><th>DECISION</th><th>CONF</th><th>EXEC</th><th>GUIDANCE</th><th>TOKENS</th><th>MODEL MS</th><th>REQUEST</th></tr></thead>
+        <tbody id="blot"></tbody>
+      </table>
+      <div class="empty" id="blotempty">No decisions yet. Select a signal, load its context, run the gate.</div>
+    </div>
+  </section>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const fmt = n => n.toLocaleString('en-US');
+const pct = p => (p*100).toFixed(1) + '%';
+const MAX = 128000;
+
+// ---------- state ----------
+let signals = [
+  {id:1, tk:'LULU', side:'LONG',  size:1.0,  strat:'EARN-MOM', status:'pending', ctx:'', heads:''},
+  {id:2, tk:'BRZE', side:'LONG',  size:0.5,  strat:'EARN-MOM', status:'pending', ctx:'', heads:''},
+  {id:3, tk:'AMAT', side:'LONG',  size:0.75, strat:'GAP-CONT', status:'pending', ctx:'', heads:''},
+];
+let sel = signals[0];
+let decisions = 0;
+
+// ---------- clocks ----------
+function tick(){
+  const now = new Date();
+  const f = tz => now.toLocaleTimeString('en-GB',{timeZone:tz,hour12:false});
+  $('#ny').textContent = f('America/New_York');
+  $('#ldn').textContent = f('Europe/London');
+  $('#kyiv').textContent = f('Europe/Kyiv');
+  const ny = new Date(now.toLocaleString('en-US',{timeZone:'America/New_York'}));
+  const m = ny.getHours()*60 + ny.getMinutes(), d = ny.getDay();
+  let s = 'CLOSED';
+  if (d>0 && d<6){ if (m>=240 && m<570) s='PRE-MARKET'; else if (m>=570 && m<960) s='REGULAR SESSION'; else if (m>=960 && m<1200) s='AFTER-HOURS'; }
+  $('#session').textContent = s;
+}
+setInterval(tick, 1000); tick();
+
+// ---------- status ----------
+fetch('/api/status').then(r=>r.json()).then(s=>{
+  $('#keychip').textContent = s.key ? 'API KEY · LIVE' : 'NO API KEY';
+  $('#keychip').className = 'chip ' + (s.key ? 'ok' : 'bad');
+  $('#model').textContent = (s.model || 'drex').toUpperCase() + ' · 128K';
+}).catch(()=>{ $('#keychip').textContent='SERVER OFFLINE'; $('#keychip').className='chip bad'; });
+
+// ---------- queue ----------
+function renderQueue(){
+  $('#queue').innerHTML = signals.map(s => `
+    <div class="sig ${s===sel?'on':''}" data-id="${s.id}">
+      <span class="tk">${s.tk}</span>
+      <span class="side ${s.side==='SHORT'?'short':''}">${s.side} ${s.size.toFixed(2)}x</span>
+      <div class="meta"><span>${s.strat||'—'}</span><span class="st ${s.status}">${s.status.replace('_',' ').toUpperCase()}</span></div>
+    </div>`).join('');
+  $('#qcount').textContent = signals.length;
+  document.querySelectorAll('.sig').forEach(el => el.onclick = () => select(+el.dataset.id));
+}
+function select(id){
+  sel.ctx = $('#ctx').value; sel.heads = $('#heads').value;
+  sel = signals.find(s=>s.id===id);
+  $('#ctk').textContent = sel.tk; $('#tapeTk').textContent = sel.tk;
+  $('#cside').textContent = sel.side;
+  $('#cside').style.color = sel.side==='SHORT' ? 'var(--block)' : 'var(--fire)';
+  $('#cside').style.background = sel.side==='SHORT' ? 'rgba(255,93,108,.1)' : 'rgba(52,227,154,.1)';
+  $('#csz').value = sel.size.toFixed(2); $('#cstrat').textContent = sel.strat;
+  $('#ctx').value = sel.ctx; $('#heads').value = sel.heads;
+  updTokens(); updHeads(); resetGate(); renderQueue();
+  $('#tape').innerHTML = '<div class="empty">Tagged headlines appear here - bullish, bearish or noise for the selected signal.</div>';
+  ['#nb','#nr','#nn'].forEach(k=>$(k).textContent='0'); $('#tms').textContent='—';
+}
+$('#addbtn').onclick = () => {
+  const tk = $('#ntk').value.trim().toUpperCase(); if(!tk) return;
+  const s = {id:Date.now(), tk, side:$('#nside').value, size:parseFloat($('#nsz').value)||1, strat:$('#nstrat').value.trim().toUpperCase()||'MANUAL', status:'pending', ctx:'', heads:''};
+  signals.unshift(s); $('#ntk').value=''; $('#nstrat').value=''; select(s.id);
+};
+$('#csz').onchange = () => { sel.size = parseFloat($('#csz').value)||sel.size; renderQueue(); };
+
+// ---------- context ----------
+function updTokens(exact){
+  const n = exact ?? Math.round($('#ctx').value.length/4);
+  $('#tok').textContent = fmt(n);
+  $('#tokkind').textContent = exact ? 'read' : 'est.';
+  const w = Math.min(100, n/MAX*100);
+  $('#tokbar').style.width = w + '%';
+  $('#tokbar').className = n > 64000 ? 'over64' : '';
+}
+$('#ctx').addEventListener('input', () => updTokens());
+$('#loadbtn').onclick = () => $('#file').click();
+$('#file').onchange = e => readFile(e.target.files[0]);
+$('#clearbtn').onclick = () => { $('#ctx').value=''; updTokens(); };
+function readFile(f){ if(!f) return; const r=new FileReader(); r.onload=()=>{ $('#ctx').value = ($('#ctx').value ? $('#ctx').value+'\n\n' : '') + `=== ${f.name} ===\n` + r.result; updTokens(); }; r.readAsText(f); }
+$('#ctxwrap').addEventListener('dragover', e=>e.preventDefault());
+$('#ctxwrap').addEventListener('drop', e=>{ e.preventDefault(); [...e.dataTransfer.files].forEach(readFile); });
+
+// ---------- api ----------
+async function decide(payload){
+  const r = await fetch('/api/decide',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+  const j = await r.json().catch(()=>({error:'Bad response from local server'}));
+  if(!r.ok || j.error) throw new Error((j.error||('HTTP '+r.status)) + (j.detail ? '\n'+j.detail : ''));
+  return j;
+}
+function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove('show'),7000); }
+
+// ---------- gate ----------
+function resetGate(){
+  $('#verdict').textContent='AWAITING'; $('#verdict').style.color='var(--faint)'; $('#vconf').textContent='';
+  document.querySelectorAll('.opt').forEach(o=>{o.classList.remove('win');o.querySelector('.f').style.width='0';o.querySelector('.p').textContent='—';});
+  ['#sms','#stok','#sexec','#gdv','#oov','#tnv'].forEach(k=>$(k).textContent='—');
+  ['#gdp','#oop','#tnp'].forEach(k=>$(k).textContent='');
+  document.querySelectorAll('#gdseg i').forEach(i=>i.style.background='#111820');
+  $('#tng').style.opacity=0; $('#gstate').textContent='IDLE';
+}
+const COLORS = {fire:'var(--fire)', size_down:'var(--size)', block:'var(--block)'};
+const LABEL = {fire:'FIRE', size_down:'SIZE DOWN', block:'BLOCK'};
+
+async function runGate(){
+  const ctx = $('#ctx').value.trim();
+  if(!ctx){ toast('Paste the earnings call or other context first.'); return; }
+  sel.size = parseFloat($('#csz').value)||sel.size;
+  resetGate();
+  $('#runbtn').disabled = true; $('#ctxwrap').classList.add('reading');
+  $('#gstate').textContent = 'READING ' + fmt(Math.round(ctx.length/4)) + ' TOKENS';
+  $('#verdict').textContent = 'READING…';
+
+  const dir = sel.side==='LONG' ? 'long' : 'short';
+  const payload = {
+    state: `DESK SIGNAL\nTicker: ${sel.tk}\nDirection: ${sel.side}\nSize: ${sel.size.toFixed(2)}x\nStrategy: ${sel.strat}\nSession: ${$('#session').textContent}\n\n=== CONTEXT ===\n${ctx}`,
+    questions: {
+      gate: {
+        type:'choice',
+        instructions:`A ${dir} signal fired on ${sel.tk} at ${sel.size.toFixed(2)}x size. Given everything in the context, what should the desk do with this signal before it goes to execution?`,
+        criteria:{
+          fire:`Send the ${dir} order at full size. The context supports the trade.`,
+          size_down:`Send the ${dir} order at reduced size. The context is mixed or adds risk.`,
+          block:`Cancel the order. The context contradicts the ${dir} thesis.`
+        }
+      },
+      guidance: {
+        type:'choice',
+        instructions:'What did management do to forward guidance?',
+        criteria:{raised:'Raised guidance', maintained:'Kept guidance unchanged', lowered:'Lowered or withdrew guidance', not_given:'No forward guidance discussed'}
+      },
+      one_off: { type:'noul', instructions:'Was the headline earnings beat driven mainly by one-time or non-recurring items?' },
+      tone: { type:'score', instructions:'How confident did management sound about the next quarters?', criteria:['Very cautious','Cautious','Neutral','Confident','Very confident'] }
+    }
+  };
+
+  try{
+    const t0 = performance.now();
+    const res = await decide(payload);
+    const minShow = 700 - (performance.now()-t0); if(minShow>0) await new Promise(r=>setTimeout(r,minShow));
+    showGate(res);
+  }catch(e){ toast(e.message); $('#verdict').textContent='ERROR'; $('#verdict').style.color='var(--block)'; $('#gstate').textContent='FAILED'; }
+  finally{ $('#runbtn').disabled=false; $('#ctxwrap').classList.remove('reading'); }
+}
+
+function showGate(res){
+  const a = res.answers || {}, g = a.gate || {};
+  const probs = g.probabilities || {};
+  const choice = g.choice || Object.keys(probs).sort((x,y)=>probs[y]-probs[x])[0];
+  document.querySelectorAll('.opt').forEach(o=>{
+    const p = probs[o.dataset.k] ?? 0;
+    o.querySelector('.f').style.width = (p*100).toFixed(1)+'%';
+    o.querySelector('.p').textContent = pct(p);
+    if(o.dataset.k===choice) o.classList.add('win');
+  });
+  $('#verdict').textContent = LABEL[choice] || String(choice).toUpperCase();
+  $('#verdict').style.color = COLORS[choice] || 'var(--txt)';
+  $('#vconf').textContent = g.confidence!=null ? 'confidence ' + pct(g.confidence) : '';
+  const ms = res.evaluation_time_ms;
+  $('#sms').textContent = ms!=null ? (ms>=1000 ? (ms/1000).toFixed(2)+'s' : Math.round(ms)+' ms') : '—';
+  const tokens = res.usage && res.usage.input_tokens;
+  $('#stok').textContent = tokens!=null ? fmt(tokens) : '—';
+  if(tokens!=null) updTokens(tokens);
+  const execMult = {fire:1, size_down:0.5, block:0}[choice];
+  const exec = execMult!=null ? sel.size*execMult : null;
+  $('#sexec').textContent = exec!=null ? exec.toFixed(2)+'x' : '—';
+  $('#sexec').style.color = COLORS[choice] || '';
+  $('#gstate').textContent = 'DONE · ' + (res.model||'').toUpperCase();
+
+  // guidance
+  let gd = '—';
+  if(a.guidance){
+    const gp = a.guidance.probabilities||{}; gd = a.guidance.choice || Object.keys(gp).sort((x,y)=>gp[y]-gp[x])[0];
+    $('#gdv').textContent = String(gd).replace('_',' ').toUpperCase();
+    $('#gdv').style.color = gd==='raised'?'var(--fire)':gd==='lowered'?'var(--block)':'var(--txt)';
+    $('#gdp').textContent = gp[gd]!=null ? pct(gp[gd]) : '';
+    const order=['raised','maintained','lowered','not_given'], col={raised:'var(--fire)',maintained:'var(--cyan)',lowered:'var(--block)',not_given:'var(--dim)'};
+    document.querySelectorAll('#gdseg i').forEach((i,ix)=>{ const k=order[ix]; i.style.background = col[k]; i.style.opacity = 0.15 + 0.85*(gp[k]||0); });
+  }
+  if(a.one_off && a.one_off.noul!=null){
+    const y = a.one_off.noul;
+    $('#oov').textContent = y>=0.5 ? 'YES' : 'NO';
+    $('#oov').style.color = y>=0.5 ? 'var(--block)' : 'var(--fire)';
+    $('#oop').textContent = 'p(yes) ' + pct(y);
+  }
+  if(a.tone && a.tone.score!=null){
+    const leg = a.tone.legend || ['Very cautious','Cautious','Neutral','Confident','Very confident'];
+    const sc = a.tone.score, idx = Math.round(sc);
+    $('#tnv').textContent = (leg[idx]||'').toUpperCase();
+    $('#tnp').textContent = 'score ' + sc.toFixed(2) + ' / ' + (leg.length-1);
+    $('#tng').style.left = (sc/(leg.length-1)*100) + '%'; $('#tng').style.opacity = 1;
+  }
+
+  sel.status = choice; renderQueue();
+  decisions++;
+  $('#spend').textContent = decisions + (decisions===1?' decision':' decisions');
+  $('#blotempty').style.display='none';
+  const tr = document.createElement('tr'); tr.className='new';
+  const nyt = new Date().toLocaleTimeString('en-GB',{timeZone:'America/New_York',hour12:false});
+  tr.innerHTML = `<td>${nyt}</td><td>${sel.tk}</td><td>${sel.side}</td><td>${sel.size.toFixed(2)}x · ${sel.strat}</td>
+    <td class="${choice}">${LABEL[choice]||choice}</td><td>${g.confidence!=null?pct(g.confidence):'—'}</td>
+    <td class="${choice}">${exec!=null?exec.toFixed(2)+'x':'—'}</td><td>${String(gd).replace('_',' ')}</td>
+    <td>${tokens!=null?fmt(tokens):'—'}</td><td>${ms!=null?Math.round(ms):'—'}</td><td style="color:var(--faint)">${(res.request_id||'').slice(0,14)}</td>`;
+  $('#blot').prepend(tr);
+}
+$('#runbtn').onclick = runGate;
+document.addEventListener('keydown', e => { if(e.key==='Enter' && (e.ctrlKey||e.metaKey)) runGate(); });
+
+// ---------- tape ----------
+function heads(){ return $('#heads').value.split('\n').map(s=>s.trim()).filter(Boolean); }
+function updHeads(){ const n=heads().length; $('#hcount').textContent = n + (n===1?' headline':' headlines'); }
+$('#heads').addEventListener('input', updHeads);
+
+async function tagTape(){
+  const hs = heads(); if(!hs.length){ toast('Paste some headlines first, one per line.'); return; }
+  $('#tagbtn').disabled = true; $('#tape').innerHTML=''; let nb=0,nr=0,nn=0, msTotal=0;
+  const dir = sel.side==='LONG' ? 'long' : 'short';
+  const CHUNK = 20;
+  try{
+    for(let i=0;i<hs.length;i+=CHUNK){
+      const part = hs.slice(i,i+CHUNK), questions = {};
+      part.forEach((h,j)=>{ questions['h'+(i+j)] = {
+        type:'choice',
+        instructions:`Headline: "${h}". For a ${dir} position in ${sel.tk}, how should the desk read this headline?`,
+        criteria:{ bullish:`Supports the ${dir} position`, bearish:`Hurts the ${dir} position`, noise:`No trading relevance for ${sel.tk}` }
+      };});
+      const res = await decide({ state:`Pre-market news tape. Desk holds a ${dir} signal on ${sel.tk}.\n\n` + part.map((h,j)=>`[${i+j+1}] ${h}`).join('\n'), questions });
+      msTotal += res.evaluation_time_ms||0;
+      part.forEach((h,j)=>{
+        const a = (res.answers||{})['h'+(i+j)] || {}, p=a.probabilities||{};
+        const c = a.choice || Object.keys(p).sort((x,y)=>p[y]-p[x])[0] || 'noise';
+        c==='bullish'?nb++:c==='bearish'?nr++:nn++;
+        const row = document.createElement('div'); row.className='hl'; row.style.animationDelay = (j*40)+'ms';
+        row.innerHTML = `<span class="tag ${c}">${c.toUpperCase()}</span><span>${h.replace(/</g,'&lt;')}</span><span class="pp">${p[c]!=null?Math.round(p[c]*100)+'%':''}</span>`;
+        $('#tape').appendChild(row);
+      });
+      $('#nb').textContent=nb; $('#nr').textContent=nr; $('#nn').textContent=nn; $('#tms').textContent=Math.round(msTotal);
+    }
+  }catch(e){ toast(e.message); }
+  finally{ $('#tagbtn').disabled=false; }
+}
+$('#tagbtn').onclick = tagTape;
+
+select(1);
+</script>
+</body>
+</html>

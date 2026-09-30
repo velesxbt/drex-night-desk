@@ -1,0 +1,18 @@
+# secrets
+.env
+.env.*
+*.key
+
+# transcripts and filings are third-party copyrighted text - keep them local
+transcripts/
+*.transcript.txt
+
+# test render with dummy data
+desk2.png
+
+# OS / editor
+.DS_Store
+__pycache__/
+*.pyc
+.vscode/
+.idea/
