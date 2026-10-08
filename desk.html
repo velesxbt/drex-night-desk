@@ -47,11 +47,10 @@ header{display:flex;align-items:center;gap:22px;padding:0 16px}
 .chip{font-family:var(--mono);font-size:10.5px;padding:6px 10px;border:1px solid var(--line2);border-radius:999px;color:var(--dim);letter-spacing:.08em;white-space:nowrap}
 .chip.ok{color:var(--fire);border-color:rgba(52,227,154,.35)}
 .chip.bad{color:var(--block);border-color:rgba(255,93,108,.35)}
-.session{color:var(--size);border-color:rgba(245,181,68,.35)}
 
 /* main grid */
 main{display:grid;grid-template-columns:270px 1fr 380px;gap:10px;min-height:0}
-.col{display:flex;flex-direction:column;gap:10px;min-height:0}
+.col{display:flex;flex-direction:column;gap:10px;min-height:0;min-width:0}
 
 /* queue */
 .queue{flex:1;overflow:auto}
@@ -192,6 +191,126 @@ td.fire{color:var(--fire)} td.size_down{color:var(--size)} td.block{color:var(--
 .toast.show{opacity:1;transform:none}
 .steps li>div{min-width:0}
 .invite span{flex:none}
+
+/* tabs: gate (Drex) | filings (NDI) */
+.view{display:contents}
+.view[hidden]{display:none}
+.tabs{display:flex;gap:3px;padding:3px;border:1px solid var(--line2);border-radius:9px;background:#070a0e}
+.tab{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;padding:7px 12px;border-radius:6px;border:0;background:none;color:var(--dim);cursor:pointer;white-space:nowrap;transition:all .15s}
+.tab:hover{color:#fff}
+.tab.on{background:linear-gradient(180deg,#132030,#0d1520);color:#fff;box-shadow:inset 0 0 0 1px rgba(88,199,255,.35)}
+.tab em{font-style:normal;color:var(--cyan);margin-left:6px}
+.tab[data-v="ndi"].on{box-shadow:inset 0 0 0 1px rgba(157,140,255,.45)}
+.tab[data-v="ndi"] em{color:var(--violet)}
+.chip.att{cursor:pointer;color:var(--faint);background:none;transition:all .15s}
+.chip.att.on{color:var(--violet);border-color:rgba(157,140,255,.45)}
+.chip.att:hover{border-color:var(--violet);color:#fff}
+.ev{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;color:var(--violet);background:rgba(157,140,255,.1);border:1px solid rgba(157,140,255,.35);border-radius:4px;padding:1px 6px;margin-left:8px;cursor:pointer}
+.ev:hover{color:#fff;border-color:var(--violet)}
+
+/* filings view */
+.fmain{display:grid;grid-template-columns:280px 1fr 430px;gap:10px;min-height:0}
+.drop{margin:12px;border:1px dashed var(--line2);border-radius:9px;padding:16px 14px;text-align:center;transition:all .15s;cursor:pointer}
+.drop:hover,.drop.over{border-color:var(--violet);background:rgba(157,140,255,.05)}
+.drop b{display:block;font-size:13px;margin-bottom:4px}
+.drop small{display:block;color:var(--dim);font-size:11.5px;line-height:1.45}
+.drop .types{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;color:var(--faint);margin-top:8px}
+.urlrow{display:grid;grid-template-columns:1fr auto;gap:6px;padding:0 12px 12px;border-bottom:1px solid var(--line)}
+.files{flex:1;overflow:auto}
+.fcard{display:grid;grid-template-columns:1fr auto;gap:3px 8px;padding:11px 14px;border-bottom:1px solid var(--line);cursor:pointer;transition:background .2s}
+.fcard:hover{background:rgba(255,255,255,.02)}
+.fcard.on{background:linear-gradient(90deg,rgba(157,140,255,.1),transparent);box-shadow:inset 2px 0 0 var(--violet)}
+.fcard .fn{font-family:var(--mono);font-size:12px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fcard .x{background:none;border:0;color:var(--faint);cursor:pointer;font-size:15px;line-height:1}
+.fcard .x:hover{color:var(--block)}
+.fcard .fm{grid-column:1/-1;display:flex;justify-content:space-between;gap:8px;font-family:var(--mono);font-size:10px;color:var(--dim)}
+.fst{letter-spacing:.1em}
+.fst.ready{color:var(--fire)} .fst.failed{color:var(--block)} .fst.queued{color:var(--faint)}
+.fst.busy{color:var(--cyan);animation:blink 1s ease-in-out infinite}
+@keyframes blink{50%{opacity:.45}}
+.ffoot{display:flex;flex-direction:column;gap:8px;padding:12px;border-top:1px solid var(--line)}
+.ffoot .row{display:flex;gap:8px;align-items:center}
+.ffoot label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--dim);white-space:nowrap}
+.ffoot .btn.go{flex:1}
+.btn.violet{background:linear-gradient(180deg,#a99bff,#7f6bf0);color:#0b0720;border:0;font-weight:700;box-shadow:0 0 24px rgba(157,140,255,.25)}
+.btn.violet:hover{filter:brightness(1.1)}
+
+.pipe{display:flex;align-items:stretch;gap:0;padding:12px 14px;overflow-x:auto}
+.stg{flex:1;min-width:104px;border:1px solid var(--line);border-radius:8px;padding:9px 11px;background:rgba(0,0,0,.2);transition:all .3s}
+.stg b{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--dim);font-weight:500}
+.stg span{display:block;font-family:var(--mono);font-size:12px;color:var(--faint);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stg.run{border-color:rgba(88,199,255,.6);box-shadow:0 0 18px rgba(88,199,255,.15)}
+.stg.run b{color:var(--cyan)} .stg.run span{color:var(--txt);animation:blink 1s ease-in-out infinite}
+.stg.ok{border-color:rgba(52,227,154,.35)} .stg.ok b{color:var(--fire)} .stg.ok span{color:var(--txt)}
+.stg.err{border-color:rgba(255,93,108,.5)} .stg.err b{color:var(--block)}
+.stg.handoff{border-style:dashed;border-color:rgba(157,140,255,.4)} .stg.handoff b{color:var(--violet)}
+.arrow{display:grid;place-items:center;width:22px;flex:none;color:var(--faint);font-family:var(--mono);font-size:12px}
+
+.fcols,.fact{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(90px,1fr) 58px 54px;gap:10px;align-items:center;padding:0 14px}
+.fcols{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:var(--faint);padding-top:8px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+.factlist{flex:1;overflow:auto}
+.fact{padding-top:9px;padding-bottom:9px;border-bottom:1px solid rgba(26,34,44,.6);cursor:pointer;transition:background .2s}
+.fact.anim{animation:in .35s ease both}
+.fact.fresh{animation:land 1s ease}
+@keyframes land{from{background:rgba(157,140,255,.22)}to{background:transparent}}
+.pg.pending{color:var(--violet);animation:blink 1s ease-in-out infinite}
+.fact:hover{background:rgba(255,255,255,.02)}
+.fact.on{background:linear-gradient(90deg,rgba(157,140,255,.1),transparent);box-shadow:inset 2px 0 0 var(--violet)}
+.fact .fl{font-size:12.5px;color:var(--dim)}
+.fact .fv{font-family:var(--mono);font-size:13px;color:var(--txt);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fact.not_found .fv,.fact.not_found .fl{color:var(--faint)}
+.fact .fc{font-family:var(--mono);font-size:10.5px;color:var(--dim);text-align:right}
+.pg{font-family:var(--mono);font-size:10px;color:var(--violet);background:rgba(157,140,255,.1);border:1px solid rgba(157,140,255,.3);border-radius:4px;padding:2px 0;text-align:center}
+.pg.none{color:var(--faint);background:none;border-color:var(--line)}
+.fgroup{padding:12px 14px 5px;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--violet);border-bottom:1px solid rgba(26,34,44,.6)}
+.fmore{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid rgba(26,34,44,.6);padding:10px 14px;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--faint);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fmore:hover{color:var(--txt)}
+.factfoot{display:flex;gap:10px;align-items:center;padding:12px 14px;border-top:1px solid var(--line)}
+.factfoot .hint{font-family:var(--mono);font-size:10px;color:var(--faint);letter-spacing:.08em;margin-right:auto}
+
+.evid{padding:14px}
+.crop{height:84px;border:1px solid var(--line);border-radius:8px;background:#080b10 repeating-linear-gradient(45deg,transparent 0 8px,rgba(255,255,255,.012) 8px 16px);display:grid;place-items:center;overflow:hidden}
+.crop img{max-width:100%;max-height:100%;object-fit:contain;background:#fff}
+.crop .empty{text-align:center}
+.quote{margin-top:12px;border-left:2px solid var(--violet);padding:4px 0 4px 12px;font-size:12.5px;line-height:1.55;color:#c4ccd6;max-height:96px;overflow:auto}
+.evmeta{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.doc{padding:16px 20px;font-family:var(--mono);font-size:11.5px;line-height:1.7;color:#94a1b0;white-space:pre-wrap;word-break:break-word}
+.doc mark{background:rgba(157,140,255,.13);color:#d9d3ff;border-radius:2px;cursor:pointer;transition:all .2s}
+.doc mark.on{background:rgba(157,140,255,.35);color:#fff;box-shadow:0 0 0 2px rgba(157,140,255,.35)}
+
+/* document viewer */
+.vbar{display:flex;align-items:center;gap:12px;padding:8px 12px 8px 14px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:11px;color:var(--dim)}
+.vfile{display:flex;align-items:center;gap:8px;min-width:0;flex:1}
+.vfile b{color:var(--txt);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vkind{flex:none;font-size:9px;letter-spacing:.12em;border:1px solid var(--line2);border-radius:4px;padding:2px 5px;color:var(--faint)}
+.vfacts{color:var(--violet);font-size:10px;letter-spacing:.08em;white-space:nowrap}
+.vmode{display:flex;border:1px solid var(--line2);border-radius:6px;overflow:hidden;flex:none}
+.vmode button{background:none;border:0;color:var(--faint);font-family:var(--mono);font-size:10px;letter-spacing:.12em;padding:6px 9px;cursor:pointer}
+.vmode button.on{background:rgba(157,140,255,.15);color:#fff}
+.vmode button:disabled{opacity:.35;cursor:default}
+.vnav{display:flex;align-items:center;gap:4px;flex:none}
+.vnav button{width:28px;height:28px;border-radius:6px;border:1px solid var(--line2);background:#0c1117;color:var(--txt);cursor:pointer;font-size:15px;line-height:1}
+.vnav button:hover:not(:disabled){border-color:var(--violet)}
+.vnav button:disabled{opacity:.3;cursor:default}
+.vnav span{min-width:84px;text-align:center;color:var(--txt);font-size:11.5px}
+.vbody{flex:1;min-height:0;overflow:auto;position:relative;background:#05070a;outline:none}
+.vpage{position:relative;margin:18px auto;width:calc(100% - 36px);max-width:900px;background:#fff;line-height:0;box-shadow:0 12px 40px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.04)}
+.vpage canvas,.vpage img{width:100%;height:auto;display:block}
+.vboxes{position:absolute;inset:0}
+.hbox{position:absolute;border:1.5px solid rgba(124,104,240,.7);background:rgba(157,140,255,.13);border-radius:3px;cursor:pointer;transition:background .2s,box-shadow .2s}
+.hbox:hover,.hbox.on{background:rgba(157,140,255,.28);border-color:#6b55e8;box-shadow:0 0 0 3px rgba(157,140,255,.3)}
+.hbox i{position:absolute;bottom:calc(100% + 3px);left:-2px;font:500 10px/1.5 var(--mono);font-style:normal;background:#6b55e8;color:#fff;padding:1px 6px;border-radius:3px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s;z-index:2}
+.hbox:hover i{opacity:1}
+.hbox.fresh{animation:pop .7s ease}
+@keyframes pop{0%{transform:scale(1.25);opacity:0;box-shadow:0 0 0 10px rgba(157,140,255,.35)}60%{opacity:1}100%{transform:none;box-shadow:0 0 0 0 rgba(157,140,255,0)}}
+.vbody.fit{display:grid;place-items:center;overflow:hidden}
+.vbody.fit .vpage{margin:0;max-width:none}
+.vpanel.expanded{position:fixed;inset:14px;z-index:45;box-shadow:0 0 0 100vmax rgba(3,5,8,.8),0 30px 80px rgba(0,0,0,.6)}   /* hover only: a pinned label would hide the line above */
+.vempty{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:30px;line-height:1.6}
+.vempty[hidden]{display:none}
+.doc .pmark{display:block;color:var(--violet);letter-spacing:.14em;font-size:10px;margin:8px 0;border-top:1px dashed rgba(157,140,255,.3);padding-top:6px}
+.exportbtn{font-size:10.5px}
+@media (max-width:1400px){ .clock.ldn{display:none} }
 @media (max-width:900px){
   body{overflow:auto;font-size:13px}
   .app{height:auto;min-height:100vh;grid-template-rows:auto auto auto;padding:8px;gap:8px}
@@ -216,6 +335,20 @@ td.fire{color:var(--fire)} td.size_down{color:var(--size)} td.block{color:var(--
   .invite{font-size:11.5px;word-break:break-all}
   .mcard{padding:22px 18px 18px}
   .toast{left:12px;right:12px;bottom:12px;max-width:none}
+  .tabs{order:10;width:100%}
+  .tab{flex:1;padding:8px 6px;font-size:10px;letter-spacing:.08em}
+  .fmain{grid-template-columns:1fr;gap:8px}
+  .files{max-height:260px}
+  .factlist{max-height:420px}
+  .fcols,.fact{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) 44px 44px;gap:8px;padding-left:12px;padding-right:12px}
+  .factfoot{flex-wrap:wrap}
+  .factfoot .hint{width:100%}
+  .factfoot .btn{flex:1}
+  .vbody{flex:none;height:72vh}
+  .vbar{flex-wrap:wrap;gap:8px}
+  .vfile{flex-basis:100%}
+  .vfacts{margin-right:auto}
+  .vpage{margin:10px auto;width:calc(100% - 20px)}
 }
 ::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-thumb{background:#1c2530;border-radius:4px}
 </style>
@@ -226,22 +359,27 @@ td.fire{color:var(--fire)} td.size_down{color:var(--size)} td.block{color:var(--
   <header class="panel">
     <div class="brand">
       <div class="logo"></div>
-      <div><h1>NIGHT DESK</h1><span>SIGNAL GATE · DECISIONS BY DREX</span></div>
+      <div><h1>NIGHT DESK</h1><span>PERCEPTION BY NDI · DECISIONS BY DREX</span></div>
     </div>
-    <span class="chip session" id="session">PRE-MARKET</span>
+    <nav class="tabs" role="tablist">
+      <button class="tab on" data-v="gate" role="tab">SIGNAL GATE · DREX</button>
+      <button class="tab" data-v="ndi" role="tab">FILINGS · NDI<em id="tabcount"></em></button>
+    </nav>
     <div class="clocks">
       <div class="clock"><small>NEW YORK</small><b id="ny">--:--:--</b></div>
-      <div class="clock"><small>LONDON</small><b id="ldn">--:--:--</b></div>
+      <div class="clock ldn"><small>LONDON</small><b id="ldn">--:--:--</b></div>
       <div class="clock"><small>KYIV</small><b id="kyiv">--:--:--</b></div>
     </div>
     <span class="chip" id="model">DREX · 128K</span>
     <span class="chip btnchip" id="keychip" title="Drex API key">API …</span>
     <div class="links">
+      <a class="ilink" href="https://www.nace.ai/ndi" target="_blank" rel="noopener" title="Nace Document Intelligence" aria-label="NDI"><svg viewBox="0 0 16 16"><path d="M3 1h6.5L13 4.5V15H3V1zm6 1.2V5h2.8L9 2.2zM5 7.5h6v1H5v-1zm0 2.2h6v1H5v-1zm0 2.2h4v1H5v-1z"/></svg></a>
       <a class="ilink" href="https://github.com/velesxbt/drex-night-desk" target="_blank" rel="noopener" title="Source on GitHub" aria-label="GitHub"><svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
       <a class="ilink" href="https://x.com/velesxbt" target="_blank" rel="noopener" title="@velesxbt on X" aria-label="X"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
     </div>
   </header>
 
+  <div class="view" id="v-gate">
   <main>
     <!-- LEFT: signal queue -->
     <section class="col">
@@ -268,13 +406,16 @@ td.fire{color:var(--fire)} td.size_down{color:var(--size)} td.block{color:var(--
           <input id="csz" value="1.0">
           <span class="mono" style="color:var(--dim);font-size:11px" id="cstrat"></span>
           <span class="sp"></span>
-          <span class="ph" style="border:0;padding:0">Context · full earnings call, filings, notes</span>
+          <button class="chip att" id="attchip" title="Filings read by NDI and attached to this signal">NDI · NO FILINGS</button>
         </div>
         <div class="ctxwrap" id="ctxwrap">
           <textarea id="ctx" spellcheck="false" placeholder="Paste the full earnings call transcript here - prepared remarks and all of Q&amp;A.
-Add the press release, last quarter's call, 10-Q MD&amp;A... Drex reads up to 128K tokens in one pass.
+Drex reads up to 128K tokens in one pass.
 
-Or drop a .txt file anywhere on this panel."></textarea>
+Filings (8-K, 10-Q, 10-K, earnings PDFs, scans) go through the FILINGS · NDI tab:
+NDI parses them, extracts the numbers, grounds each one to its page, and attaches them here.
+
+Drop a .txt here, or a PDF to send it to NDI."></textarea>
           <div class="scan"></div>
         </div>
         <div class="meter">
@@ -306,12 +447,12 @@ Or drop a .txt file anywhere on this panel."></textarea>
         <div class="flags">
           <div class="ph" style="padding:0;border:0"><span>Risk read · same pass</span></div>
           <div class="flag">
-            <small>FORWARD GUIDANCE</small>
+            <small>FORWARD GUIDANCE<button class="ev" id="gdev" hidden></button></small>
             <div class="row"><b id="gdv">—</b><span id="gdp"></span></div>
             <div class="seg" id="gdseg"><i></i><i></i><i></i><i></i></div>
           </div>
           <div class="flag">
-            <small>BEAT DRIVEN BY ONE-OFF ITEMS</small>
+            <small>BEAT DRIVEN BY ONE-OFF ITEMS<button class="ev" id="ooev" hidden></button></small>
             <div class="row"><b id="oov">—</b><span id="oop"></span></div>
           </div>
           <div class="flag">
@@ -344,25 +485,117 @@ Or drop a .txt file anywhere on this panel."></textarea>
     <div class="ph"><span>Blotter</span><span id="spend">0 decisions</span></div>
     <div class="blot">
       <table>
-        <thead><tr><th>TIME NY</th><th>TICKER</th><th>SIDE</th><th>SIGNAL</th><th>DECISION</th><th>CONF</th><th>EXEC</th><th>GUIDANCE</th><th>TOKENS</th><th>MODEL MS</th><th>REQUEST</th></tr></thead>
+        <thead><tr><th>TIME NY</th><th>TICKER</th><th>SIDE</th><th>SIGNAL</th><th>DECISION</th><th>CONF</th><th>EXEC</th><th>GUIDANCE</th><th>SOURCES</th><th>TOKENS</th><th>MODEL MS</th><th>REQUEST</th></tr></thead>
         <tbody id="blot"></tbody>
       </table>
       <div class="empty" id="blotempty">No decisions yet. Select a signal, load its context, run the gate.</div>
     </div>
   </section>
+  </div>
+
+  <!-- ================= FILINGS · NDI ================= -->
+  <div class="view" id="v-ndi" hidden>
+  <main class="fmain">
+    <!-- LEFT: filings -->
+    <section class="col">
+      <div class="panel" style="flex:1;display:flex;flex-direction:column;min-height:0">
+        <div class="ph"><span><span class="dot" style="background:var(--violet);box-shadow:0 0 10px var(--violet)"></span>Filings</span><b id="fcount">0</b></div>
+        <div class="drop" id="drop">
+          <b>Drop the documents behind the trade</b>
+          <small>10-K, 10-Q, 8-K, earnings releases, scans, spreadsheets, research PDFs</small>
+          <div class="types">PDF · XLSX · CSV · DOCX · HTML · EML · PNG/JPG SCANS · 36 TYPES</div>
+          <input type="file" id="ffile" multiple hidden>
+        </div>
+        <div class="urlrow">
+          <input id="furl" placeholder="or a filing URL (https://…pdf)" spellcheck="false">
+          <button class="btn" id="furladd">Add</button>
+        </div>
+        <div class="files" id="files"><div class="empty">No filings yet. Drop a PDF above - NDI parses it, pulls the numbers, and pins every value to its page.</div></div>
+        <div class="ffoot">
+          <button class="btn go" id="readbtn">Read filings</button>
+          <div class="row"><small class="mono" style="color:var(--faint);font-size:10px;letter-spacing:.06em">One key, same credit as Drex</small><span class="sp" style="flex:1"></span><button class="linkbtn exportbtn" id="exportbtn" hidden title="Download this run as demo/ndi-demo.json">EXPORT RUN ⤓</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CENTER: pipeline + document viewer -->
+    <section class="col">
+      <div class="panel">
+        <div class="pipe" id="pipe">
+          <div class="stg" data-s="upload"><b>UPLOAD</b><span>—</span></div><div class="arrow">→</div>
+          <div class="stg" data-s="parse"><b>PARSE</b><span>—</span></div><div class="arrow">→</div>
+          <div class="stg" data-s="extract"><b>EXTRACT</b><span>—</span></div><div class="arrow">→</div>
+          <div class="stg" data-s="ground"><b>GROUND</b><span>—</span></div><div class="arrow">→</div>
+          <div class="stg handoff" data-s="drex"><b>DREX GATE</b><span id="handofftxt">decision</span></div>
+        </div>
+      </div>
+      <div class="panel vpanel" id="vpanel" style="flex:1;display:flex;flex-direction:column;min-height:0">
+        <div class="vbar">
+          <span class="vfile"><span class="vkind" id="vkind">—</span><b id="vname">No filing selected</b></span>
+          <span class="vfacts" id="vfacts"></span>
+          <div class="vmode" role="tablist"><button class="on" data-m="page" role="tab">PAGE</button><button data-m="text" role="tab">TEXT</button></div>
+          <div class="vnav"><button id="vprev" aria-label="Previous page" disabled>‹</button><span id="vpage">p. — / —</span><button id="vnext" aria-label="Next page" disabled>›</button><button id="vexpand" title="Expand" aria-label="Expand viewer">⤢</button></div>
+        </div>
+        <div class="vbody" id="vbody" tabindex="0">
+          <div class="vpage" id="vpagebox" hidden><canvas id="vcanvas"></canvas><img id="vimg" alt="" hidden><div class="vboxes" id="vboxes"></div></div>
+          <div class="doc" id="doc" hidden></div>
+          <div class="empty vempty" id="vempty">Drop a filing and hit Read filings - its pages show here, with every extracted value boxed where NDI found it.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT: extraction rail + evidence -->
+    <section class="col">
+      <div class="panel" style="flex:1;display:flex;flex-direction:column;min-height:0">
+        <div class="ph"><span>NDI extraction · grounded</span><b id="factfile">—</b></div>
+        <div class="fcols"><span>FIELD</span><span>VALUE</span><span style="text-align:right">CONF</span><span style="text-align:center">SOURCE</span></div>
+        <div class="factlist" id="facts"><div class="empty">Facts appear here after NDI reads a filing - each one with the page it came from.</div></div>
+        <div class="factfoot">
+          <span class="hint" id="schemahint">SCHEMA · FILING</span>
+          <label class="mono" style="color:var(--dim);font-size:10px;letter-spacing:.12em" for="fsig">SIGNAL</label>
+          <select id="fsig" style="width:auto"></select>
+          <button class="btn violet" id="sendbtn" disabled>Send to signal gate →</button>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="ph"><span>Evidence</span><b id="evpage">—</b></div>
+        <div class="evid">
+          <div class="crop" id="crop"><div class="empty">Pick a fact to see where it sits on the page.</div></div>
+          <div class="quote" id="evquote" hidden></div>
+          <div class="evmeta">
+            <div class="stat"><small>MATCH</small><b id="evmethod" style="font-size:13px">—</b></div>
+            <div class="stat"><small>LOCATOR</small><b id="evconf" style="font-size:13px">—</b></div>
+            <div class="stat"><small>FIELD CONF</small><b id="evfconf" style="font-size:13px">—</b></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <section class="panel">
+    <div class="ph"><span>Perception log</span><span id="ndispend">0 jobs</span></div>
+    <div class="blot">
+      <table>
+        <thead><tr><th>TIME NY</th><th>FILE</th><th>OPERATION</th><th>STATUS</th><th>RESULT</th><th>CREDITS</th><th>MS</th><th>JOB</th></tr></thead>
+        <tbody id="nlog"></tbody>
+      </table>
+      <div class="empty" id="nlogempty">No NDI jobs yet. Drop a filing and hit Read filings.</div>
+    </div>
+  </section>
+  </div>
 </div>
 <div class="toast" id="toast"></div>
 
 <div class="modal" id="keymodal" role="dialog" aria-modal="true" aria-labelledby="mtitle">
   <div class="mcard">
     <button class="x" id="mclose" aria-label="Close">×</button>
-    <div class="mkick">NIGHT DESK · POWERED BY DREX</div>
-    <h2 id="mtitle">Plug in your Drex key</h2>
-    <p class="lead">Night Desk runs on <b>Drex</b>, Nace AI's decision model - it reads a full earnings call (up to 128K tokens) and decides fire, size down or block in under a second. Bring your own free key to run it live.</p>
+    <div class="mkick">NIGHT DESK · POWERED BY NACE NDI + DREX</div>
+    <h2 id="mtitle">Plug in your Nace key</h2>
+    <p class="lead"><b>NDI</b> reads the filings - parse, extract, and ground every number to its page. <b>Drex</b> reads all of it and decides fire, size down or block in under a second. One console key runs both, from the same credit.</p>
     <ol class="steps">
       <li><div><b>Sign up with the invite link</b><span class="sub">Free account, comes with signup credit.</span>
         <a class="invite" id="invitelink" href="https://drex.nace.ai/invite/j8697dgz" target="_blank" rel="noopener">drex.nace.ai/invite/j8697dgz <span>OPEN ↗</span></a></div></li>
-      <li><div><b>Create an API key</b><span class="sub">In the Drex console, open <b>API Keys</b> in the left menu and create a key. It starts with <code>nace_sk_</code>.</span></div></li>
+      <li><div><b>Create an API key</b><span class="sub">In the console, open <b>API Keys</b> in the left menu and create a key. It starts with <code>nace_sk_</code> and works for Drex and Perception (NDI).</span></div></li>
       <li><div><b>Paste it here</b><span class="sub">Stored only in this browser. It's sent with each run and never saved on the server.</span>
         <div class="keyrow"><input id="keyin" type="password" placeholder="nace_sk_..." autocomplete="off" spellcheck="false"><button class="btn go" id="keysave">Save</button></div></div></li>
     </ol>
@@ -370,7 +603,7 @@ Or drop a .txt file anywhere on this panel."></textarea>
       <small id="mnote">No key yet? Watch a recorded run first.</small>
       <button class="linkbtn" id="demobtn">TRY THE DEMO →</button>
     </div>
-    <div class="credit">Built by <a href="https://x.com/velesxbt" target="_blank" rel="noopener">@velesxbt</a> · <a href="https://github.com/velesxbt/drex-night-desk" target="_blank" rel="noopener">source on GitHub</a> · not affiliated with Nace AI</div>
+    <div class="credit">Built by <a href="https://x.com/velesxbt" target="_blank" rel="noopener">@velesxbt</a> · <a href="https://github.com/velesxbt/drex-night-desk" target="_blank" rel="noopener">source on GitHub</a> · <a href="https://www.nace.ai/ndi" target="_blank" rel="noopener">nace.ai/ndi</a></div>
   </div>
 </div>
 
@@ -378,13 +611,17 @@ Or drop a .txt file anywhere on this panel."></textarea>
 const $ = s => document.querySelector(s);
 const fmt = n => n.toLocaleString('en-US');
 const pct = p => (p*100).toFixed(1) + '%';
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const sleep = ms => new Promise(r => setTimeout(r, ms));
 const MAX = 128000;
 
 // ---------- state ----------
+// ndi: filings NDI read and attached to this signal - [{name, pages, markdown, facts}]
 let signals = [
-  {id:1, tk:'LULU', side:'LONG',  size:1.0,  strat:'EARN-MOM', status:'pending', ctx:'', heads:''},
-  {id:2, tk:'BRZE', side:'LONG',  size:0.5,  strat:'EARN-MOM', status:'pending', ctx:'', heads:''},
-  {id:3, tk:'AMAT', side:'LONG',  size:0.75, strat:'GAP-CONT', status:'pending', ctx:'', heads:''},
+  {id:1, tk:'LULU', side:'LONG',  size:1.0,  strat:'EARN-MOM', status:'pending', ctx:'', heads:'', ndi:null},
+  {id:4, tk:'SNOW', side:'LONG',  size:1.0,  strat:'EARN-MOM', status:'pending', ctx:'', heads:'', ndi:null},
+  {id:2, tk:'BRZE', side:'LONG',  size:0.5,  strat:'EARN-MOM', status:'pending', ctx:'', heads:'', ndi:null},
+  {id:3, tk:'AMAT', side:'LONG',  size:0.75, strat:'GAP-CONT', status:'pending', ctx:'', heads:'', ndi:null},
 ];
 let sel = signals[0];
 let decisions = 0;
@@ -396,16 +633,11 @@ function tick(){
   $('#ny').textContent = f('America/New_York');
   $('#ldn').textContent = f('Europe/London');
   $('#kyiv').textContent = f('Europe/Kyiv');
-  const ny = new Date(now.toLocaleString('en-US',{timeZone:'America/New_York'}));
-  const m = ny.getHours()*60 + ny.getMinutes(), d = ny.getDay();
-  let s = 'CLOSED';
-  if (d>0 && d<6){ if (m>=240 && m<570) s='PRE-MARKET'; else if (m>=570 && m<960) s='REGULAR SESSION'; else if (m>=960 && m<1200) s='AFTER-HOURS'; }
-  $('#session').textContent = s;
 }
 setInterval(tick, 1000); tick();
 
 // ---------- status ----------
-let SERVER_KEY = false, DEMO = false;
+let SERVER_KEY = false, DEMO = false, HAS_RECORDING = false;
 const store = {
   get(){ try { return localStorage.getItem('drex_key') || ''; } catch(e){ return store._m || ''; } },
   set(v){ store._m = v; try { v ? localStorage.setItem('drex_key', v) : localStorage.removeItem('drex_key'); } catch(e){} }
@@ -419,7 +651,7 @@ function keyChip(){
   else { c.textContent = 'ADD API KEY'; c.className = 'chip btnchip bad'; }
 }
 fetch('/api/status').then(r=>r.json()).then(s=>{
-  SERVER_KEY = !!s.server_key;
+  SERVER_KEY = !!s.server_key; HAS_RECORDING = !!s.demo_recording;
   if (s.invite) { $('#invitelink').href = s.invite; $('#invitelink').firstChild.textContent = s.invite.replace(/^https?:\/\//,'') + ' '; }
   $('#model').textContent = (s.model || 'drex').toUpperCase() + ' · 128K';
   keyChip();
@@ -462,20 +694,20 @@ function select(id){
   $('#cside').style.background = sel.side==='SHORT' ? 'rgba(255,93,108,.1)' : 'rgba(52,227,154,.1)';
   $('#csz').value = sel.size.toFixed(2); $('#cstrat').textContent = sel.strat;
   $('#ctx').value = sel.ctx; $('#heads').value = sel.heads;
-  updTokens(); updHeads(); resetGate(); renderQueue();
+  attChip(); updTokens(); updHeads(); resetGate(); renderQueue(); renderSigSelect();
   $('#tape').innerHTML = '<div class="empty">Tagged headlines appear here - bullish, bearish or noise for the selected signal.</div>';
   ['#nb','#nr','#nn'].forEach(k=>$(k).textContent='0'); $('#tms').textContent='—';
 }
 $('#addbtn').onclick = () => {
   const tk = $('#ntk').value.trim().toUpperCase(); if(!tk) return;
-  const s = {id:Date.now(), tk, side:$('#nside').value, size:parseFloat($('#nsz').value)||1, strat:$('#nstrat').value.trim().toUpperCase()||'MANUAL', status:'pending', ctx:'', heads:''};
+  const s = {id:Date.now(), tk, side:$('#nside').value, size:parseFloat($('#nsz').value)||1, strat:$('#nstrat').value.trim().toUpperCase()||'MANUAL', status:'pending', ctx:'', heads:'', ndi:null};
   signals.unshift(s); $('#ntk').value=''; $('#nstrat').value=''; select(s.id);
 };
 $('#csz').onchange = () => { sel.size = parseFloat($('#csz').value)||sel.size; renderQueue(); };
 
 // ---------- context ----------
 function updTokens(exact){
-  const n = exact ?? Math.round($('#ctx').value.length/4);
+  const n = exact ?? Math.round(($('#ctx').value.length + ndiBlock(sel).length)/4);
   $('#tok').textContent = fmt(n);
   $('#tokkind').textContent = exact ? 'read' : 'est.';
   const w = Math.min(100, n/MAX*100);
@@ -488,17 +720,29 @@ $('#file').onchange = e => readFile(e.target.files[0]);
 $('#clearbtn').onclick = () => { $('#ctx').value=''; updTokens(); };
 function readFile(f){ if(!f) return; const r=new FileReader(); r.onload=()=>{ $('#ctx').value = ($('#ctx').value ? $('#ctx').value+'\n\n' : '') + `=== ${f.name} ===\n` + r.result; updTokens(); }; r.readAsText(f); }
 $('#ctxwrap').addEventListener('dragover', e=>e.preventDefault());
-$('#ctxwrap').addEventListener('drop', e=>{ e.preventDefault(); [...e.dataTransfer.files].forEach(readFile); });
+const isText = f => /\.(txt|md)$/i.test(f.name) || f.type === 'text/plain';
+$('#ctxwrap').addEventListener('drop', e=>{
+  e.preventDefault();
+  const fs = [...e.dataTransfer.files];
+  fs.filter(isText).forEach(readFile);
+  const docs = fs.filter(f => !isText(f));
+  if (docs.length) { addFiles(docs); showView('ndi'); toast(`${docs.length} filing${docs.length>1?'s':''} queued for NDI - hit READ FILINGS.`, true); }
+});
 
 // ---------- api ----------
-async function decide(payload){
-  const headers = {'Content-Type':'application/json'}; const k = store.get(); if (k) headers['X-Drex-Key'] = k;
-  const r = await fetch('/api/decide',{method:'POST',headers,body:JSON.stringify(payload)});
+function keyHeaders(){ const h = {}; const k = store.get(); if (k) h['X-Drex-Key'] = k; return h; }
+// GET when body is undefined, POST JSON otherwise. Server errors carry a string `error`;
+// NDI jobs carry an `error` object of their own, which callers read from the job.
+async function api(path, body){
+  const headers = keyHeaders();
+  const opts = body === undefined ? {headers} : {method:'POST', headers:{...headers,'Content-Type':'application/json'}, body:JSON.stringify(body)};
+  const r = await fetch(path, opts);
   if (r.status === 401 && !SERVER_KEY) setTimeout(openModal, 400);
   const j = await r.json().catch(()=>({error:'Bad response from local server'}));
-  if(!r.ok || j.error) throw new Error((j.error||('HTTP '+r.status)) + (j.detail ? '\n'+j.detail : ''));
+  if(!r.ok || typeof j.error === 'string') throw new Error((typeof j.error === 'string' ? j.error : 'HTTP '+r.status) + (j.detail ? '\n'+String(j.detail).slice(0,400) : ''));
   return j;
 }
+const decide = payload => api('/api/decide', payload);
 function toast(msg, ok){ const t=$('#toast'); t.textContent=msg; t.style.background = ok ? '#0b1a13' : ''; t.style.borderColor = ok ? 'rgba(52,227,154,.5)' : ''; t.style.color = ok ? '#c9f7e2' : ''; t.classList.add('show'); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove('show'),7000); }
 
 // ---------- gate ----------
@@ -509,6 +753,7 @@ function resetGate(){
   ['#gdp','#oop','#tnp'].forEach(k=>$(k).textContent='');
   document.querySelectorAll('#gdseg i').forEach(i=>i.style.background='#111820');
   $('#tng').style.opacity=0; $('#gstate').textContent='IDLE';
+  ['#gdev','#ooev'].forEach(k=>$(k).hidden=true);
 }
 const COLORS = {fire:'var(--fire)', size_down:'var(--size)', block:'var(--block)'};
 const LABEL = {fire:'FIRE', size_down:'SIZE DOWN', block:'BLOCK'};
@@ -519,16 +764,17 @@ async function runGate(){
     if(DEMO && sel.tk==='LULU'){ return replayGate(); }
     openModal(); return;
   }
-  if(!ctx){ toast('Paste the earnings call or other context first.'); return; }
+  const docs = ndiBlock(sel);
+  if(!ctx && !docs){ toast('Paste the earnings call, or attach filings from the FILINGS · NDI tab.'); return; }
   sel.size = parseFloat($('#csz').value)||sel.size;
   resetGate();
   $('#runbtn').disabled = true; $('#ctxwrap').classList.add('reading');
-  $('#gstate').textContent = 'READING ' + fmt(Math.round(ctx.length/4)) + ' TOKENS';
+  $('#gstate').textContent = 'READING ' + fmt(Math.round((ctx.length+docs.length)/4)) + ' TOKENS';
   $('#verdict').textContent = 'READING…';
 
   const dir = sel.side==='LONG' ? 'long' : 'short';
   const payload = {
-    state: `DESK SIGNAL\nTicker: ${sel.tk}\nDirection: ${sel.side}\nSize: ${sel.size.toFixed(2)}x\nStrategy: ${sel.strat}\nSession: ${$('#session').textContent}\n\n=== CONTEXT ===\n${ctx}`,
+    state: `DESK SIGNAL\nTicker: ${sel.tk}\nDirection: ${sel.side}\nSize: ${sel.size.toFixed(2)}x\nStrategy: ${sel.strat}\n\n${docs}${ctx ? `=== CONTEXT ===\n${ctx}` : ''}`,
     questions: {
       gate: {
         type:'choice',
@@ -598,6 +844,9 @@ function showGate(res){
     $('#oov').style.color = y>=0.5 ? 'var(--block)' : 'var(--fire)';
     $('#oop').textContent = 'p(yes) ' + pct(y);
   }
+  // evidence: the filing page each risk read rests on
+  evChip('#gdev', sel, ['guidance_direction','fy_eps_guidance_high','fy_eps_guidance_low']);
+  evChip('#ooev', sel, ['one_off_items']);
   if(a.tone && a.tone.score!=null){
     const leg = a.tone.legend || ['Very cautious','Cautious','Neutral','Confident','Very confident'];
     const sc = a.tone.score, idx = Math.round(sc);
@@ -607,6 +856,7 @@ function showGate(res){
   }
 
   sel.status = choice; renderQueue();
+  if(!res._replay) LAST_GATE = {res, sig:{tk:sel.tk, side:sel.side, size:sel.size, strat:sel.strat}, withNdi:!!(sel.ndi&&sel.ndi.length)};
   decisions++;
   $('#spend').textContent = decisions + (decisions===1?' decision':' decisions');
   $('#blotempty').style.display='none';
@@ -615,6 +865,7 @@ function showGate(res){
   tr.innerHTML = `<td>${nyt}</td><td>${sel.tk}</td><td>${sel.side}</td><td>${sel.size.toFixed(2)}x · ${sel.strat}</td>
     <td class="${choice}">${LABEL[choice]||choice}</td><td>${g.confidence!=null?pct(g.confidence):'—'}</td>
     <td class="${choice}">${exec!=null?exec.toFixed(2)+'x':'—'}</td><td>${String(gd).replace('_',' ')}</td>
+    <td style="color:var(--violet)">${esc(sourcesLabel(sel))}</td>
     <td>${tokens!=null?fmt(tokens):'—'}</td><td>${ms!=null?Math.round(ms):'—'}</td><td style="color:var(--faint)">${(res.request_id||'').slice(0,14)}</td>`;
   $('#blot').prepend(tr);
 }
@@ -691,19 +942,27 @@ Hit RUN GATE to replay what Drex decided.
 Then TAG TAPE to replay the headline tagging.
 
 To run Drex live on your own text: add your key (top right), paste any earnings call, run.`;
-function startDemo(){
+async function startDemo(){
   DEMO = true; keyChip();
   select(1);
-  $('#ctx').value = DEMO_CTX; updTokens();
   $('#heads').value = DEMO_HEADS.map(h=>h[0]).join('\n'); updHeads();
+  if (HAS_RECORDING && await loadRecording()) {
+    $('#ctx').value = ''; updTokens();
+    showView('ndi');
+    toast('Recorded run loaded - hit READ FILINGS to replay NDI, then send the facts to the gate.', true);
+    return;
+  }
+  $('#ctx').value = DEMO_CTX; updTokens();
   toast('Demo loaded - hit RUN GATE to replay a real Drex decision.', true);
 }
 async function replayGate(){
+  // With the recorded NDI run attached, replay the gate Drex returned on those filings.
+  const rec = sel.ndi && REC && REC.gate ? {...REC.gate, _replay:true} : DEMO_GATE;
   resetGate(); $('#runbtn').disabled = true; $('#ctxwrap').classList.add('reading');
-  $('#gstate').textContent = 'READING 11,326 TOKENS'; $('#verdict').textContent = 'READING…';
+  $('#gstate').textContent = 'READING ' + fmt((rec.usage&&rec.usage.input_tokens)||0) + ' TOKENS'; $('#verdict').textContent = 'READING…';
   await new Promise(r=>setTimeout(r, 900));
   $('#runbtn').disabled = false; $('#ctxwrap').classList.remove('reading');
-  showGate(DEMO_GATE);
+  showGate(rec);
 }
 async function replayTape(hs){
   $('#tagbtn').disabled = true; $('#tape').innerHTML=''; let nb=0,nr=0,nn=0;
@@ -721,6 +980,760 @@ async function replayTape(hs){
   $('#tagbtn').disabled = false;
 }
 
+// ---------- perception: NDI reads the filings (parse → extract → ground) ----------
+// One schema for any filing - an earnings release, 8-K, 10-Q or 10-K. NDI fills each field with a
+// status and the page it was read from; fields a document type doesn't carry come back not_found.
+const GROUPS = [
+  // [group, [[id, label, type, description, enum], ...]]
+  ['Filing', [
+    ['company','Company','string','Company name as written in the filing.'],
+    ['ticker','Ticker','string','The company\'s stock trading symbol, e.g. "LULU" (on a 10-K/10-Q cover page under "Trading Symbol").'],
+    ['document_type','Document','string','What kind of document this is.', ['earnings_release','8-K','10-Q','10-K','annual_report','other']],
+    ['fiscal_period','Fiscal period','string','The most recent period the figures cover, e.g. "Q2 fiscal 2026" or "fiscal 2025".'],
+  ]],
+  ['Income statement', [
+    ['revenue_musd','Revenue','number','Total revenue for the most recent reported period, in millions of US dollars.'],
+    ['revenue_growth_pct','Revenue growth','number','Year-over-year change in total revenue for that period, in percent (8.5 for 8.5%).'],
+    ['product_revenue_musd','Product revenue','number','Product or subscription revenue, if reported separately from total revenue, in millions of US dollars.'],
+    ['gross_profit_musd','Gross profit','number','Gross profit for the period, in millions of US dollars.'],
+    ['gross_margin_pct','Gross margin','number','Gross margin for the period, in percent. If only dollar amounts are given, gross profit divided by total revenue.'],
+    ['rd_expense_musd','R&D','number','Research and development expense for the period, in millions of US dollars.'],
+    ['sm_expense_musd','Sales & marketing','number','Sales and marketing (or selling) expense for the period, in millions of US dollars. If only SG&A is reported, use that.'],
+    ['ga_expense_musd','G&A','number','General and administrative expense for the period, in millions of US dollars.'],
+    ['operating_income_musd','Operating income','number','Income (or loss) from operations for the period, in millions of US dollars; negative for a loss.'],
+    ['operating_margin_pct','Operating margin','number','Operating income (or loss) as a percent of total revenue for the period; negative for an operating loss. If only dollar amounts are given, compute it from them.'],
+    ['net_income_musd','Net income','number','Net income for the period, in millions of US dollars. A net loss is a negative number (e.g. -312.5).'],
+    ['eps_gaap','Diluted EPS (GAAP)','number','GAAP diluted earnings (or loss) per share for the period, in US dollars. A loss per share is a negative number.'],
+    ['eps_adjusted','Adjusted EPS','number','Adjusted (non-GAAP) diluted earnings per share for the period, in US dollars, if reported.'],
+    ['diluted_shares_m','Diluted shares','number','Weighted-average diluted shares outstanding for the period, in millions.'],
+    ['tax_rate_pct','Effective tax rate','number','Effective income tax rate for the period, in percent.'],
+  ]],
+  ['Cash flow', [
+    ['operating_cash_flow_musd','Operating cash flow','number','Net cash provided by (used in) operating activities, as shown in the cash flow statement (often year-to-date in a 10-Q), in millions of US dollars.'],
+    ['capex_musd','Capex','number','Purchases of property and equipment (capital expenditures) for the same period as operating cash flow, in millions of US dollars, as a positive number.'],
+    ['free_cash_flow_musd','Free cash flow','number','Free cash flow: operating cash flow minus capital expenditures for the same period, in millions of US dollars. Use the company\'s figure if it reports one.'],
+    ['sbc_musd','Stock-based comp','number','Stock-based compensation expense for the period, in millions of US dollars.'],
+    ['buyback_musd','Buybacks','number','Share repurchases during the period, in millions of US dollars.'],
+    ['buyback_remaining_musd','Buyback authorization left','number','Remaining amount available under the share repurchase program, in millions of US dollars.'],
+  ]],
+  ['Balance sheet', [
+    ['cash_musd','Cash & equivalents','number','Cash and cash equivalents at the end of the period, in millions of US dollars.'],
+    ['securities_musd','Marketable securities','number','Short- plus long-term marketable securities or investments at the end of the period, in millions of US dollars.'],
+    ['total_debt_musd','Total debt','number','Total borrowings (short- plus long-term debt and convertible notes, excluding leases) at the end of the period, in millions of US dollars.'],
+    ['inventory_musd','Inventory','number','Inventories at the end of the period, in millions of US dollars.'],
+    ['inventory_growth_pct','Inventory growth','number','Year-over-year change in inventories, in percent.'],
+    ['deferred_revenue_musd','Deferred revenue','number','Deferred revenue (current plus non-current) at the end of the period, in millions of US dollars.'],
+    ['total_assets_musd','Total assets','number','Total assets at the end of the period, in millions of US dollars.'],
+    ['equity_musd','Stockholders\' equity','number','Total stockholders\' equity at the end of the period, in millions of US dollars.'],
+  ]],
+  ['Business metrics', [
+    ['segment_summary','Segments / regions','string','Revenue by segment or region with year-over-year growth, in one line, e.g. "Americas $1.6B (-3%), China $0.4B (+25%)".'],
+    ['comparable_sales_pct','Comparable sales','number','Comparable (same-store) sales growth for the period, in percent.'],
+    ['store_count','Stores','number','Number of company-operated stores at the end of the period.'],
+    ['rpo_musd','Remaining perf. obligations','number','Remaining performance obligations (contracted future revenue) at the end of the period, in millions of US dollars.'],
+    ['net_revenue_retention_pct','Net revenue retention','number','Net revenue retention (or dollar-based net retention) rate, in percent.'],
+    ['large_customers','Large customers','string','Number of large customers with the company\'s threshold, e.g. "754 customers with >$1M trailing 12-month product revenue".'],
+    ['employees','Employees','number','Number of employees (headcount), if stated.'],
+  ]],
+  ['Guidance', [
+    ['guidance_direction','Guidance change','string','How the company changed its full-year outlook versus its prior outlook.', ['raised','maintained','lowered','not_given']],
+    ['fy_eps_guidance_low','FY EPS guide · low','number','Low end of full-year diluted EPS guidance, in US dollars.'],
+    ['fy_eps_guidance_high','FY EPS guide · high','number','High end of full-year diluted EPS guidance, in US dollars.'],
+    ['fy_revenue_guidance_low_musd','FY revenue guide · low','number','Low end of full-year revenue (or product revenue) guidance, in millions of US dollars.'],
+    ['fy_revenue_guidance_high_musd','FY revenue guide · high','number','High end of full-year revenue (or product revenue) guidance, in millions of US dollars.'],
+    ['other_guidance','Other outlook','string','Any other outlook figures stated (next-quarter revenue, operating margin, free cash flow margin), in one line.'],
+  ]],
+  ['Risk & events', [
+    ['one_off_items','One-off items','string','Non-recurring items that moved the period (tariff refunds, impairments, settlements, restructuring), with amounts and per-share impact if stated.'],
+    ['tariff_impact','Tariff impact','string','What the filing says about tariffs and their impact on costs or margins, with amounts if stated, in one line.'],
+    ['key_risks','Key risks','string','The two or three risks management stresses most for the coming quarters, in one sentence.'],
+    ['risk_factor_changes','Risk factor changes','string','Material changes to risk factors versus the last annual report (10-Q Part II, Item 1A), in one line, or "none" if the filing says there are none.'],
+    ['legal_proceedings','Legal proceedings','string','Material legal proceedings or investigations disclosed, in one line.'],
+    ['subsequent_events','After the quarter','string','Events after the period end (acquisitions, debt issued, buyback changes, leadership changes), in one line.'],
+  ]],
+];
+const FIELDS = GROUPS.flatMap(([, fs]) => fs);
+const GROUP_OF = Object.fromEntries(GROUPS.flatMap(([g, fs]) => fs.map(f => [f[0], g])));
+const SCHEMA = {type:'object', properties:Object.fromEntries(FIELDS.map(([id,,type,description,en]) => [id, en ? {type,description,enum:en} : {type,description}]))};
+const INSTRUCTIONS = 'This is a company financial filing: an earnings release, 8-K, 10-Q, 10-K or annual report, possibly hundreds of pages. Report figures for the most recent reported period (the quarter for a release or 10-Q, the fiscal year for a 10-K), from the financial statements where possible. In a 10-Q, use the three-month (quarter) column, not the year-to-date column. Losses are negative numbers, not missing values. For guidance, use the outlook section; a 10-Q or 10-K usually has none. Give percentages as plain numbers (18.8 for 18.8%) and money in the unit each field asks for.';
+const DOC_BUDGET = 380000;   // chars of parsed filing text sent to Drex (~95K tokens), leaving room for pasted context
+
+let files = [], fileSel = null, factSel = null, fid = 0, njobs = 0, READING = false;
+let REC = null, LAST_GATE = null;   // recorded demo run; last live gate (for export)
+
+const shortName = n => n.length > 24 ? n.slice(0, 21) + '…' : n;
+const kb = b => b >= 1e6 ? (b/1e6).toFixed(1) + ' MB' : Math.max(1, Math.ceil(b/1e3)) + ' KB';
+const clip = (s, n) => s.length > n ? s.slice(0, n) + '\n[... truncated ...]\n' : s;
+const found = f => f.facts.filter(x => x.status === 'found');
+const factVal = (f, id) => { const x = f.facts.find(y => y.id === id && y.status === 'found'); return x ? x.value : null; };
+// "NASDAQ: LULU", "lulu" -> "LULU"
+const tickerOf = f => { const m = String(factVal(f, 'ticker') || '').toUpperCase().replace(/^(NASDAQ|NYSE|AMEX|NYSE ARCA)\s*[:\-]\s*/, '').match(/[A-Z][A-Z.]{0,5}/); return m ? m[0] : null; };
+function identity(f){
+  const parts = [tickerOf(f), factVal(f, 'document_type'), factVal(f, 'fiscal_period')].filter(Boolean).map(v => String(v).replace(/_/g, ' ').toUpperCase());
+  return parts.length ? parts.join(' · ') : null;
+}
+function fmtVal(id, v){
+  if (v == null || v === '') return '—';
+  const n = typeof v === 'number' ? v : (/^-?[\d,]*\.?\d+$/.test(String(v).trim()) ? parseFloat(String(v).replace(/,/g,'')) : null);
+  if (n != null && !isNaN(n)) {
+    if (id.endsWith('_musd')) return (n < 0 ? '-$' : '$') + Math.abs(n).toLocaleString('en-US',{maximumFractionDigits:1}) + 'M';
+    if (id.endsWith('_m')) return n.toLocaleString('en-US',{maximumFractionDigits:1}) + 'M';
+    if (id.endsWith('_pct')) return n.toFixed(1) + '%';
+    if (id.includes('eps')) return (n < 0 ? '-$' : '$') + Math.abs(n).toFixed(2);
+    return fmt(n);
+  }
+  return String(v).replace(/_/g,' ');
+}
+
+// ---- views ----
+function showView(v){
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('on', t.dataset.v === v));
+  $('#v-gate').hidden = v !== 'gate'; $('#v-ndi').hidden = v !== 'ndi';
+  if (v === 'ndi') renderViewer();
+}
+document.querySelectorAll('.tab').forEach(t => t.onclick = () => showView(t.dataset.v));
+$('#attchip').onclick = () => showView('ndi');
+
+// ---- what the gate sees ----
+function buildNdiText(sig){
+  let out = '=== NDI EXTRACTED FACTS · each value grounded to its source page ===\n';
+  sig.ndi.forEach(d => {
+    out += `[${d.name} · ${d.pages} page${d.pages===1?'':'s'}]\n`;
+    let g = '';
+    d.facts.filter(x => x.status === 'found').forEach(x => {
+      if (GROUP_OF[x.id] !== g) { g = GROUP_OF[x.id]; out += `${g}:\n`; }
+      out += `- ${x.label}: ${fmtVal(x.id, x.value)}${x.page ? ` [p.${x.page}]` : ''}${x.quote ? ` "${x.quote.replace(/\s+/g,' ').slice(0,200)}"` : ''}\n`;
+    });
+    const miss = d.facts.filter(x => x.status !== 'found').map(x => x.label);
+    if (miss.length) out += `Not stated in this filing: ${miss.join(', ')}\n`;
+  });
+  const per = Math.floor(DOC_BUDGET / sig.ndi.length);
+  sig.ndi.forEach(d => { out += `\n=== FILING · ${d.name} · parsed by NDI · ${d.pages} pages ===\n${clip(d.markdown, per)}\n`; });
+  return out + '\n';
+}
+function ndiBlock(sig){ return (sig && sig.ndi && sig.ndiText) || ''; }
+function sourcesLabel(sig){
+  if (!sig.ndi || !sig.ndi.length) return 'text only';
+  const pages = sig.ndi.reduce((a,d) => a + (d.pages||0), 0);
+  const f = sig.ndi.flatMap(d => d.facts.filter(x => x.status === 'found'));
+  return `${sig.ndi.length} doc${sig.ndi.length>1?'s':''} · ${pages}p · ${f.filter(x=>x.page).length}/${f.length} grounded`;
+}
+function attChip(){
+  const c = $('#attchip'), d = sel && sel.ndi;
+  if (!d || !d.length) { c.textContent = 'NDI · NO FILINGS'; c.classList.remove('on'); return; }
+  const n = d.reduce((a,x) => a + x.facts.filter(f => f.status === 'found').length, 0);
+  c.textContent = `NDI · ${d.length} FILING${d.length>1?'S':''} · ${n} FACTS`; c.classList.add('on');
+}
+function evChip(elSel, sig, ids){
+  const el = $(elSel); el.hidden = true;
+  if (!sig.ndi) return;
+  for (const id of ids) for (const d of sig.ndi) {
+    const x = d.facts.find(f => f.id === id && f.status === 'found' && f.page);
+    if (x) { el.hidden = false; el.textContent = `p.${x.page} ↗`; el.title = `${x.label} - ${d.name}, page ${x.page}`; el.onclick = () => jumpTo(d.name, id); return; }
+  }
+}
+function jumpTo(name, id){
+  const f = files.find(x => x.name === name && x.status === 'ready'); if (!f) return;
+  fileSel = f; factSel = f.facts.find(x => x.id === id) || null;
+  if (factSel && factSel.page) f.vp = factSel.page;
+  showView('ndi'); renderFiles(); renderFacts();
+}
+// The signal a filing goes to defaults to the filing's own ticker; a company with no signal yet gets "+ ADD".
+function renderSigSelect(){
+  const tk = fileSel && fileSel.facts.length ? tickerOf(fileSel) : null;
+  const match = tk && signals.find(s => s.tk === tk);
+  const extra = [...new Set(files.filter(f => f.facts.length).map(tickerOf).filter(t => t && !signals.some(s => s.tk === t)))];
+  $('#fsig').innerHTML = signals.map(s => `<option value="${s.id}">${esc(s.tk)} ${s.side}</option>`).join('')
+    + extra.map(t => `<option value="new:${esc(t)}">+ ADD ${esc(t)} SIGNAL</option>`).join('');
+  $('#fsig').value = match ? String(match.id) : tk ? 'new:' + tk : String(sel ? sel.id : '');
+}
+
+// ---- files ----
+function addFiles(list){
+  list.forEach(file => files.push({id:++fid, name:file.name, size:file.size, file, status:'queued', facts:[]}));
+  if (!fileSel && files.length) fileSel = files[0];
+  renderFiles(); renderFacts();
+}
+$('#furladd').onclick = () => {
+  const u = $('#furl').value.trim();
+  if (!/^https:\/\//i.test(u)) { toast('Use an https:// link to the filing.'); return; }
+  let name = 'filing'; try { name = decodeURIComponent(new URL(u).pathname.split('/').pop()) || name; } catch(e){}
+  files.push({id:++fid, name, url:u, status:'queued', facts:[]});
+  if (!fileSel) fileSel = files[files.length-1];
+  $('#furl').value = ''; renderFiles(); renderFacts();
+};
+$('#furl').addEventListener('keydown', e => { if (e.key === 'Enter') $('#furladd').click(); });
+$('#drop').onclick = () => $('#ffile').click();
+$('#ffile').onchange = e => { addFiles([...e.target.files]); e.target.value = ''; };
+['dragover','dragenter'].forEach(ev => $('#drop').addEventListener(ev, e => { e.preventDefault(); $('#drop').classList.add('over'); }));
+['dragleave','drop'].forEach(ev => $('#drop').addEventListener(ev, () => $('#drop').classList.remove('over')));
+$('#drop').addEventListener('drop', e => { e.preventDefault(); addFiles([...e.dataTransfer.files]); });
+
+const ST = {queued:'QUEUED', uploading:'UPLOADING', parsing:'PARSING', extracting:'EXTRACTING', grounding:'GROUNDING', ready:'READY', failed:'FAILED'};
+const BUSY = ['uploading','parsing','extracting','grounding'];
+function renderFiles(){
+  $('#fcount').textContent = files.length;
+  $('#tabcount').textContent = files.length || '';
+  $('#sendbtn').disabled = !files.some(f => f.status === 'ready');
+  $('#exportbtn').hidden = !files.some(f => f.status === 'ready' && !f.replay);
+  if (!files.length) { $('#files').innerHTML = '<div class="empty">No filings yet. Drop a PDF above - NDI parses it, pulls the numbers, and pins every value to its page.</div>'; return; }
+  $('#files').innerHTML = files.map(f => {
+    const meta = f.status === 'failed' ? esc(f.err || 'failed')
+      : [f.status === 'ready' ? tickerOf(f) : null, f.pages != null ? `${f.pages} PAGES` : (f.size ? kb(f.size) : (f.url ? 'URL' : 'RECORDED')), f.ocr ? 'OCR' : null, f.status === 'ready' ? `${found(f).length} FACTS` : null].filter(Boolean).join(' · ');
+    return `<div class="fcard ${f===fileSel?'on':''}" data-id="${f.id}">
+      <span class="fn" title="${esc(f.name)}">${esc(f.name)}</span><button class="x" data-x="${f.id}" title="Remove" aria-label="Remove">×</button>
+      <div class="fm"><span title="${esc(f.err||'')}" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${meta}</span><span class="fst ${BUSY.includes(f.status)?'busy':f.status}">${ST[f.status]}</span></div></div>`;
+  }).join('');
+  document.querySelectorAll('.fcard').forEach(el => el.onclick = e => {
+    const f = files.find(x => x.id === +el.dataset.id);
+    if (e.target.dataset.x) {
+      if (BUSY.includes(f.status)) return;
+      files = files.filter(x => x !== f);
+      if (fileSel === f) { fileSel = files[0] || null; factSel = null; }
+    } else { fileSel = f; factSel = null; }
+    renderFiles(); renderFacts();
+  });
+}
+
+// ---- pipeline strip ----
+function stage(s, state, text){
+  const el = document.querySelector(`.stg[data-s="${s}"]`);
+  el.classList.remove('run','ok','err'); if (state) el.classList.add(state);
+  if (text != null) el.querySelector('span').textContent = text;
+}
+function resetStages(){ ['upload','parse','extract','ground'].forEach(s => stage(s, '', '—')); }
+function stagesFor(f){
+  if (BUSY.includes(f.status)) return;
+  if (f.status !== 'ready') return resetStages();
+  const fs = found(f);
+  stage('upload', 'ok', f.url ? 'URL source' : f.size ? kb(f.size) : 'recorded');
+  stage('parse', 'ok', `${f.pages} pages${f.ocr ? ' · OCR' : ''}`);
+  stage('extract', 'ok', `${fs.length}/${FIELDS.length} fields`);
+  stage('ground', 'ok', `${fs.filter(x => x.page).length}/${fs.length} on page`);
+}
+
+// ---- perception log ----
+function logJob(f, op, status, result, credits, ms, jobId){
+  njobs++; $('#ndispend').textContent = njobs + (njobs===1 ? ' job' : ' jobs'); $('#nlogempty').style.display = 'none';
+  const tr = document.createElement('tr'); tr.className = 'new';
+  const nyt = new Date().toLocaleTimeString('en-GB',{timeZone:'America/New_York',hour12:false});
+  tr.innerHTML = `<td>${nyt}</td><td>${esc(shortName(f.name))}</td><td>${op.toUpperCase()}</td><td class="${status==='succeeded'?'fire':'block'}">${status.toUpperCase()}</td>
+    <td>${esc(result||'')}</td><td>${credits!=null?credits:'—'}</td><td>${ms!=null?Math.round(ms):'—'}</td><td style="color:var(--faint)">${esc(String(jobId||'').slice(0,13))}</td>`;
+  $('#nlog').prepend(tr);
+}
+
+// ---- NDI calls ----
+// onUpdate sees a running job's partial result (progressive extract publishes values early).
+async function waitJob(job, onUpdate){
+  const t0 = Date.now();
+  while (job.status === 'queued' || job.status === 'running') {
+    if (Date.now() - t0 > 600000) throw new Error('NDI job is still running after 10 minutes.');
+    if (onUpdate && job.result) onUpdate(job.result);
+    await sleep(onUpdate ? 1000 : 1500);
+    job = await api('/api/docs/jobs/' + job.job_id);
+  }
+  if (job.status !== 'succeeded') throw new Error(`NDI ${job.kind || 'job'} ${job.status}${job.error && job.error.message ? ': ' + job.error.message : ''}`);
+  return job;
+}
+async function runOp(f, op, body, summary, onUpdate){
+  const t0 = performance.now();
+  let job;
+  try { job = await waitJob(await api('/api/docs/' + op + (onUpdate ? '?wait=0' : ''), body), onUpdate); }
+  catch (e) { logJob(f, op, 'failed', e.message.split('\n')[0], null, performance.now() - t0, ''); throw e; }
+  const ms = performance.now() - t0, credits = job.credits ?? job.units ?? null;
+  const prev = f.ops[op];   // ground can run in batches: add them up
+  f.ops[op] = {credits: prev && prev.credits != null && credits != null ? prev.credits + credits : credits, ms: Math.round(ms) + (prev ? prev.ms : 0)};
+  logJob(f, op, 'succeeded', summary(job), credits, ms, job.job_id);
+  return job;
+}
+// Files go straight from the browser to the document service with a single-use grant;
+// the API key never leaves this desk's server.
+async function uploadSource(f){
+  if (f.url) return {type:'url', url:f.url, file_name:f.name};
+  const t0 = performance.now();
+  const g = await api('/api/docs/grant', {file_name:f.name});
+  const fd = new FormData();
+  fd.append('file', f.file, f.name);
+  fd.append('metadata', JSON.stringify({path:g.path}));   // a plain string field, not a file part
+  const url = g.upload_url + (g.upload_url.includes('?') ? '&' : '?') + 'wait_seconds=60';
+  let r;
+  try { r = await fetch(url, {method:'POST', headers:{'X-Upload-Token':g.token}, body:fd, credentials:'omit'}); }
+  catch (e) { throw new Error('The browser could not reach the document service for the upload (' + e.message + ').'); }
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) {
+    const why = (j.error && j.error.message) || (Array.isArray(j.detail) ? j.detail.map(d => `${(d.loc || []).join('.')}: ${d.msg}`).join('; ') : j.detail) || '';
+    throw new Error('Upload failed (' + r.status + ')' + (why ? ': ' + why : ''));
+  }
+  const file = (j.result && j.result.file) || j.file;
+  if (!file) throw new Error('Upload accepted but not finished yet (status ' + (j.status || '?') + ') - try again in a moment.');
+  logJob(f, 'upload', 'succeeded', kb(f.size), null, performance.now() - t0, j.job_id || '');
+  return {type:'workspace_file', workspace_id:file.workspace_id || g.workspace_id, file_id:file.file_id || file.id};
+}
+// Artifact links in a job point at /v1/documents/jobs/{id}/...; the desk server fetches them.
+function artifactPath(u){ const m = String(u || '').match(/\/v1\/(?:documents\/)?jobs\/([0-9a-f-]{36}\/[^?#]+)/i); return m ? m[1] : null; }
+function factsFrom(res){
+  const byPath = Object.fromEntries((res.fields || []).map(x => [String(x.path).replace(/^\//, ''), x]));
+  return FIELDS.map(([id, label]) => {
+    const x = byPath[id] || {}, c = (x.citations || [])[0] || {}, loc = c.location || {};
+    const value = x.value ?? (res.data ? res.data[id] : null);
+    return {id, label, value, status: x.status || (value != null ? 'found' : 'not_found'), confidence: x.confidence ?? null,
+            page: loc.page ?? null, quote: c.source_text || null, polys: loc.polygons || null};
+  });
+}
+// Values can arrive before their citations (progressive delivery). Update facts in place, and
+// reveal each value on its page as soon as it has one.
+function applyExtract(f, res){
+  const next = factsFrom(res), fresh = [];
+  if (!f.facts.length) f.facts = next.map(x => ({...x, page:null}));
+  next.forEach(n => {
+    const x = f.facts.find(y => y.id === n.id);
+    Object.assign(x, {value:n.value, status:n.status, confidence:n.confidence, quote:n.quote || x.quote, polys:n.polys || x.polys});
+    if (n.page && !x.page) { x.page = n.page; x.hidden = true; x._rects = null; fresh.push(x); }
+  });
+  renderFacts();
+  if (fresh.length) queueReveal(f, fresh);
+}
+const REVEAL_MS = 320;
+function queueReveal(f, xs){ f.revealQ = (f.revealQ || []).concat(xs); if (!f.revealing) runReveal(f); }
+async function runReveal(f){
+  f.revealing = true;
+  while (f.revealQ.length) {
+    f.revealQ.sort((a, b) => a.page - b.page);
+    const x = f.revealQ.shift();
+    x.hidden = false;
+    if (f.follow && fileSel === f) {   // the viewer follows the values as they land, until the user takes over
+      x.fresh = true; f.vp = x.page; renderFacts();
+      await sleep(REVEAL_MS); x.fresh = false;
+    }
+  }
+  f.revealing = false; renderFacts();
+}
+function applyGround(f, res){
+  (res.targets || []).forEach(t => {
+    const x = f.facts.find(y => y.id === t.id), m = (t.matches || [])[0];
+    if (!x || t.status !== 'found' || !m) return;
+    x.method = m.match_method; x.locConf = m.confidence ?? null;
+    if (m.location && m.location.page) x.page = m.location.page;
+    if (m.location && m.location.polygons && m.location.polygons.length) { x.polys = m.location.polygons; x._rects = null; }
+    x.cropRef = artifactPath(m.cropped_image_url);
+  });
+}
+async function loadCrop(x){
+  if (x.crop || !x.cropRef) return;
+  try {
+    const r = await fetch('/api/docs/jobs/' + x.cropRef, {headers:keyHeaders()});
+    if (r.ok) { x.blob = await r.blob(); x.crop = URL.createObjectURL(x.blob); }
+  } catch (e) {}
+}
+async function loadCrops(f){ for (const x of f.facts) { await loadCrop(x); if (x === factSel) showEvidence(); } }
+
+async function perceive(f){
+  fileSel = f; factSel = null; f.facts = []; f.err = null; f.ops = {}; f.follow = true; f._anim = false; resetStages(); renderFacts();
+  const set = st => { f.status = st; renderFiles(); };
+  try {
+    set('uploading'); stage('upload', 'run', f.url ? 'URL source' : 'sending…');
+    const source = await uploadSource(f);
+    stage('upload', 'ok', f.url ? 'URL source' : kb(f.size));
+
+    set('parsing'); stage('parse', 'run', 'reading…');
+    const pj = await runOp(f, 'parse', {source, output:{formats:['markdown'], include_page_markers:true, table_format:'markdown'}},
+      j => `${j.result.document.page_count} pages${j.result.ocr_applied ? ' · OCR' : ''}`);
+    const doc = pj.result.document || {};
+    f.pages = doc.page_count; f.ocr = !!pj.result.ocr_applied; f.markdown = doc.markdown || doc.text || ''; f._pages = undefined;
+    f.convertedRef = artifactPath(pj.result.converted_pdf_url);   // Word, HTML, email... rendered to PDF by NDI
+    if (doc.content_url && artifactPath(doc.content_url)) {   // long filings: markdown is a preview, fetch it all
+      try { const r = await fetch('/api/docs/jobs/' + artifactPath(doc.content_url), {headers:keyHeaders()}); if (r.ok) f.markdown = await r.text(); } catch (e) {}
+    }
+    stage('parse', 'ok', `${f.pages} pages${f.ocr ? ' · OCR' : ''}`);
+
+    set('extracting'); stage('extract', 'run', 'filling schema…');
+    const parsed = {type:'parse_result', job_id:pj.job_id};
+    const ej = await runOp(f, 'extract', {source:parsed, schema:SCHEMA, instructions:INSTRUCTIONS, delivery:'progressive', citations:{enabled:true, include_source_text:true}},
+      j => `${(j.result.fields || []).filter(x => x.status === 'found').length}/${FIELDS.length} found`,
+      res => { applyExtract(f, res); stage('extract', 'run', `${found(f).length} values · citing…`); });
+    applyExtract(f, ej.result);
+    const fs = found(f);
+    stage('extract', 'ok', `${fs.length}/${FIELDS.length} fields`);
+    renderFacts();
+
+    set('grounding'); stage('ground', 'run', 'locating…');
+    const targets = fs.map(x => ({id:x.id, text:(x.quote || String(x.value)).slice(0, 400), hint:x.label, ...(x.page ? {page_hints:[x.page]} : {})}));
+    try {
+      for (let i = 0; i < targets.length; i += 30) {   // ground takes up to 30 quotes per call
+        const batch = targets.slice(i, i + 30);
+        const gj = await runOp(f, 'ground', {source:parsed, targets:batch, options:{include_previews:true, max_matches:1}},
+          j => `${(j.result.targets || []).filter(t => t.status === 'found').length}/${batch.length} located`);
+        applyGround(f, gj.result);
+        stage('ground', 'run', `${Math.min(i + 30, targets.length)}/${targets.length} located…`);
+      }
+      stage('ground', 'ok', `${fs.filter(x => x.page).length}/${fs.length} on page`);
+    } catch (e) {   // facts still carry their extract citations
+      stage('ground', 'err', 'no crops'); toast(f.name + ': ground step failed - ' + e.message);
+    }
+    while (f.revealing) await sleep(100);
+    set('ready'); renderFacts();
+    loadCrops(f);
+  } catch (e) {
+    f.err = e.message.split('\n')[0]; set('failed');
+    const cur = document.querySelector('.stg.run');
+    if (cur) { cur.classList.remove('run'); cur.classList.add('err'); cur.querySelector('span').textContent = 'failed'; }
+    toast(f.name + ': ' + e.message);
+  }
+}
+
+// Replays a recorded run (demo/ndi-demo.json) with the same stages, at a readable pace.
+async function replayFile(f){
+  const r = f.rec, ops = r.ops || {};
+  fileSel = f; factSel = null; f.facts = []; resetStages(); renderFacts();
+  const set = st => { f.status = st; renderFiles(); };
+  const op = (name, txt) => logJob(f, name, 'succeeded', txt, ops[name] ? ops[name].credits : null, ops[name] ? ops[name].ms : null, 'replay');
+  set('uploading'); stage('upload', 'run', 'sending…'); await sleep(450);
+  stage('upload', 'ok', r.size ? kb(r.size) : 'recorded');
+  set('parsing'); stage('parse', 'run', 'reading…'); await sleep(900);
+  f.pages = r.pages; f.ocr = !!r.ocr; f.markdown = r.markdown || ''; f._pages = undefined;
+  stage('parse', 'ok', `${f.pages} pages${f.ocr ? ' · OCR' : ''}`); op('parse', `${f.pages} pages${f.ocr ? ' · OCR' : ''}`);
+  set('extracting'); stage('extract', 'run', 'filling schema…'); await sleep(700);
+  f.follow = true; f._anim = false;
+  f.facts = r.facts.map(x => ({...x, crop:null, page:null}));   // values first, citations next - as NDI delivers them
+  const fs = found(f);
+  stage('extract', 'run', `${fs.length} values · citing…`); renderFacts(); await sleep(700);
+  r.facts.forEach(rf => { const x = f.facts.find(y => y.id === rf.id); if (rf.page) { x.page = rf.page; x.hidden = true; } });
+  queueReveal(f, f.facts.filter(x => x.hidden));
+  while (f.revealing) await sleep(100);
+  stage('extract', 'ok', `${fs.length}/${FIELDS.length} fields`); op('extract', `${fs.length}/${FIELDS.length} found`); renderFacts();
+  set('grounding'); stage('ground', 'run', 'locating…'); await sleep(700);
+  f.facts.forEach(x => { if (x.cropData) x.crop = x.cropData; });
+  stage('ground', 'ok', `${fs.filter(x => x.page).length}/${fs.length} on page`); op('ground', `${fs.filter(x => x.crop).length}/${fs.length} located`);
+  set('ready'); renderFacts();
+}
+
+async function readFilings(){
+  if (READING) return;
+  if (!files.length) { toast('Drop a filing first - a 10-Q, 8-K, earnings PDF or scan.'); return; }
+  const todo = files.filter(f => f.status !== 'ready');
+  if (!todo.length) { toast('All filings are read. Send the facts to the gate, or drop another filing.', true); return; }
+  if (todo.some(f => !f.replay) && !hasKey()) { openModal(); return; }
+  READING = true; $('#readbtn').disabled = true;
+  for (const f of todo) await (f.replay ? replayFile(f) : perceive(f));
+  READING = false; $('#readbtn').disabled = false; renderFiles();
+  const ok = files.filter(f => f.status === 'ready').length;
+  if (ok) { stage('drex', '', 'ready → send'); toast(`NDI read ${ok} filing${ok>1?'s':''}. Pick the signal and hit SEND TO SIGNAL GATE.`, true); }
+}
+$('#readbtn').onclick = readFilings;
+
+// ---- facts, evidence, parsed doc ----
+function renderFacts(){
+  const f = fileSel;
+  $('#factfile').textContent = f ? shortName(f.name) : '—';
+  if (f) stagesFor(f); else resetStages();
+  if (f && !f.vp) f.vp = 1;
+  if (!f || !f.facts.length) {
+    $('#facts').innerHTML = `<div class="empty">${f && BUSY.includes(f.status) ? 'NDI is reading ' + esc(f.name) + '…' : f && f.status === 'failed' ? esc(f.err || 'This filing failed.') : 'Facts appear here after NDI reads a filing - each one with the page it came from.'}</div>`;
+    $('#schemahint').textContent = 'SCHEMA · FILING';
+    showEvidence(); renderViewer(); return;
+  }
+  // values found first; fields this document type doesn't carry fold away
+  const anim = !f._anim; f._anim = true;   // rows animate in once, not on every update
+  const row = (x, n) => { const i = f.facts.indexOf(x); return `<div class="fact ${x.status} ${x===factSel?'on':''} ${anim?'anim':''} ${x.fresh?'fresh':''}" data-i="${i}" style="animation-delay:${n*25}ms">
+    <span class="fl">${esc(x.label)}</span>
+    <span class="fv" title="${esc(x.status==='found' ? fmtVal(x.id, x.value) : '')}">${x.status==='found' ? esc(fmtVal(x.id, x.value)) : x.status==='ambiguous' ? 'ambiguous' : 'not in filing'}</span>
+    <span class="fc">${x.confidence != null ? Math.round(x.confidence*100) + '%' : '—'}</span>
+    ${x.page && !x.hidden ? `<span class="pg">p.${x.page}</span>` : x.status === 'found' && BUSY.includes(f.status) ? '<span class="pg none pending">…</span>' : '<span class="pg none">—</span>'}</div>`; };
+  const hits = f.facts.filter(x => x.status !== 'not_found'), miss = f.facts.filter(x => x.status === 'not_found');
+  let g = '';
+  $('#facts').innerHTML = hits.map((x, n) => { const h = GROUP_OF[x.id] !== g ? `<div class="fgroup">${esc(g = GROUP_OF[x.id])}</div>` : ''; return h + row(x, n); }).join('')
+    + (miss.length ? `<button class="fmore" id="fmore">${f.showMissing ? '▾' : '▸'} ${miss.length} not in this filing${f.showMissing ? '' : ' - ' + esc(miss.slice(0, 3).map(x => x.label).join(', ')) + (miss.length > 3 ? '…' : '')}</button>` : '')
+    + (f.showMissing ? miss.map((x, n) => row(x, n)).join('') : '');
+  document.querySelectorAll('#facts .fact').forEach(el => el.onclick = () => selectFact(f.facts[+el.dataset.i].id));
+  if ($('#fmore')) $('#fmore').onclick = () => { f.showMissing = !f.showMissing; renderFacts(); };
+  $('#factfile').textContent = identity(f) || shortName(f.name);
+  $('#schemahint').textContent = `${found(f).length}/${FIELDS.length} FIELDS FOUND`;
+  renderSigSelect();
+  showEvidence(); renderViewer();
+}
+function selectFact(id){
+  const f = fileSel; if (!f) return;
+  f.follow = false;
+  factSel = f.facts.find(x => x.id === id) || null;
+  if (factSel && factSel.page) f.vp = factSel.page;
+  document.querySelectorAll('#facts .fact').forEach(r => r.classList.toggle('on', f.facts[+r.dataset.i] === factSel));
+  const row = document.querySelector('#facts .fact.on'); if (row) row.scrollIntoView({block:'nearest'});
+  showEvidence(); renderViewer();
+}
+function showEvidence(){
+  const x = factSel && fileSel && fileSel.facts.includes(factSel) ? factSel : null;
+  $('#evpage').textContent = x && x.page ? 'PAGE ' + x.page : '—';
+  $('#crop').innerHTML = x && x.crop
+    ? `<img src="${x.crop}" alt="${esc(x.label)} on page ${x.page}">`
+    : `<div class="empty">${!x ? 'Pick a fact to see where it sits on the page.' : x.status !== 'found' ? 'NDI checked the whole filing - this field is not in it.' : x.cropRef ? 'Loading crop…' : 'No visual crop for this match.'}</div>`;
+  $('#evquote').hidden = !(x && x.quote);
+  if (x && x.quote) $('#evquote').textContent = '“' + x.quote.trim() + '”';
+  $('#evmethod').textContent = x && x.method ? x.method.toUpperCase() : '—';
+  $('#evconf').textContent = x && x.locConf != null ? pct(x.locConf) : '—';
+  $('#evfconf').textContent = x && x.confidence != null ? pct(x.confidence) : '—';
+}
+// ---- document viewer: the page itself, boxed where each value was read ----
+const PDFJS = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/';
+let _pdfjs = null, vmode = 'page', vtoken = 0, vtask = null;
+function pdfjs(){
+  if (!_pdfjs) _pdfjs = new Promise((res, rej) => {
+    const s = document.createElement('script');
+    s.src = PDFJS + 'pdf.min.js';
+    s.onload = () => { pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS + 'pdf.worker.min.js'; res(pdfjsLib); };
+    s.onerror = () => { _pdfjs = null; rej(new Error('Could not load the PDF viewer')); };
+    document.head.appendChild(s);
+  });
+  return _pdfjs;
+}
+const isPdf = f => f.file && (f.file.type === 'application/pdf' || /\.pdf$/i.test(f.name));
+const dataBytes = d => Uint8Array.from(atob(d.slice(d.indexOf(',') + 1)), c => c.charCodeAt(0)).buffer;
+// The original pages: the dropped PDF or image, NDI's PDF rendering of other formats, or the recording.
+async function docSource(f){
+  if (f._src !== undefined) return f._src;
+  let src = null;
+  try {
+    if (isPdf(f)) src = {kind:'pdf', bytes: await f.file.arrayBuffer()};
+    else if (f.file && /^image\//.test(f.file.type)) src = {kind:'image', url: URL.createObjectURL(f.file)};
+    else if (f.rec && f.rec.doc) src = f.rec.doc.startsWith('data:image/') ? {kind:'image', url:f.rec.doc} : {kind:'pdf', bytes: dataBytes(f.rec.doc)};
+    else if (f.convertedRef) {
+      const r = await fetch('/api/docs/jobs/' + f.convertedRef, {headers:keyHeaders()});
+      if (r.ok) src = {kind:'pdf', bytes: await r.arrayBuffer(), converted:true};
+    }
+    if (src && src.kind === 'pdf') src.pdf = await (await pdfjs()).getDocument({data: new Uint8Array(src.bytes.slice(0))}).promise;
+  } catch (e) { src = null; }
+  if (src || f.status === 'ready') f._src = src;   // a converted PDF only exists once parse is done
+  return src;
+}
+function splitPages(f){
+  if (f._pages !== undefined) return f._pages;
+  const parts = (f.markdown || '').split(/-{3}\s*Page\s+(\d+)\s*-{3}/i);
+  if (parts.length < 3) return f._pages = null;
+  const m = {};
+  for (let i = 1; i < parts.length; i += 2) m[+parts[i]] = (m[+parts[i]] || '') + parts[i+1];
+  return f._pages = m;
+}
+
+// Where a value sits on its page, in 0-1 page coordinates. NDI's polygons first; otherwise find
+// the source quote (or the value) in the PDF's own text layer.
+const norm = s => String(s).toLowerCase().replace(/[‘’]/g, "'").replace(/[^a-z0-9$%.,']+/g, ' ').replace(/\s+/g, ' ').trim();
+function polyRect(pts, w1, h1){
+  if (!Array.isArray(pts) || pts.length < 2 || !Array.isArray(pts[0])) return null;
+  let xs = pts.map(p => +p[0]), ys = pts.map(p => +p[1]);
+  if (Math.max(...xs, ...ys) > 1.01 && w1) { xs = xs.map(x => x / w1); ys = ys.map(y => y / h1); }   // points, not normalized
+  return {x:Math.min(...xs), y:Math.min(...ys), w:Math.max(...xs) - Math.min(...xs), h:Math.max(...ys) - Math.min(...ys)};
+}
+function mergeRects(rs){
+  const out = [];
+  rs.sort((a, b) => a.y - b.y || a.x - b.x).forEach(r => {
+    const l = out.find(o => Math.abs(o.y - r.y) < Math.max(o.h, r.h) * 0.5);
+    if (!l) return out.push({...r});
+    const x1 = Math.min(l.x, r.x), y1 = Math.min(l.y, r.y), x2 = Math.max(l.x + l.w, r.x + r.w), y2 = Math.max(l.y + l.h, r.y + r.h);
+    Object.assign(l, {x:x1, y:y1, w:x2 - x1, h:y2 - y1});
+  });
+  return out;
+}
+async function textLayer(f, page){
+  f._tc = f._tc || {};
+  if (f._tc[page.pageNumber]) return f._tc[page.pageNumber];
+  const c = await page.getTextContent();
+  let text = ''; const spans = [];
+  c.items.forEach(it => { const t = norm(it.str); if (!t) return; if (text) text += ' '; const a = text.length; text += t; spans.push({a, b:text.length, it}); });
+  return f._tc[page.pageNumber] = {text, spans};
+}
+async function rectsFor(f, x, page, vp1){
+  if (x._rects) return x._rects;
+  let rs = (x.polys || []).map(p => polyRect(p, vp1 && vp1.width, vp1 && vp1.height)).filter(r => r && r.w > 0 && r.h > 0);
+  if (!rs.length && page) {
+    const tl = await textLayer(f, page);
+    const q = x.quote ? norm(x.quote) : '';
+    const needles = [q.slice(0, 120), q.slice(0, 40), x.value != null && typeof x.value !== 'boolean' ? norm(x.value) : ''];
+    for (const n of needles) {
+      if (n.length < 3) continue;
+      const at = tl.text.indexOf(n), end = at + n.length; if (at < 0) continue;
+      rs = mergeRects(tl.spans.filter(s => s.b > at && s.a < end).map(({a, b, it}) => {
+        const t = pdfjsLib.Util.transform(vp1.transform, it.transform), h = Math.hypot(t[2], t[3]);
+        // a PDF text item is often a whole line: box only the matched part of it (by character share)
+        const f0 = (Math.max(at, a) - a) / (b - a), f1 = (Math.min(end, b) - a) / (b - a);
+        return {x:(t[4] + it.width * f0) / vp1.width, y:(t[5] - h) / vp1.height, w:it.width * (f1 - f0) / vp1.width, h:h * 1.2 / vp1.height};
+      }));
+      break;
+    }
+  }
+  return x._rects = rs;
+}
+
+function setNav(p, total){
+  $('#vpage').textContent = total ? `p. ${p} / ${total}` : 'p. — / —';
+  $('#vprev').disabled = !total || p <= 1; $('#vnext').disabled = !total || p >= total;
+}
+function vEmpty(html){ $('#vpagebox').hidden = true; $('#doc').hidden = true; $('#vempty').hidden = false; $('#vempty').innerHTML = html; }
+async function renderViewer(){
+  if ($('#v-ndi').hidden) return;   // sized from the panel, so render once it's visible
+  const f = fileSel, tok = ++vtoken;
+  const x = factSel && f && f.facts.includes(factSel) ? factSel : null;
+  $('#vname').textContent = f ? f.name : 'No filing selected';
+  if (!f) { $('#vkind').textContent = '—'; $('#vfacts').textContent = ''; setNav(0, 0); return vEmpty('Drop a filing and hit Read filings - its pages show here, with every extracted value boxed where NDI found it.'); }
+  const src = await docSource(f); if (tok !== vtoken) return;
+  const pages = splitPages(f);
+  const total = src && src.pdf ? src.pdf.numPages : src ? 1 : (f.pages || (pages ? Math.max(...Object.keys(pages).map(Number)) : 0));
+  f.vp = Math.min(Math.max(1, f.vp || 1), Math.max(1, total));
+  setNav(f.vp, total);
+  $('#vkind').textContent = src ? (src.kind === 'image' ? 'IMAGE' : src.converted ? 'PDF · NDI' : 'PDF') : f.markdown ? 'TEXT' : '—';
+  const onPage = f.facts.filter(y => y.status === 'found' && y.page === f.vp && !y.hidden);
+  $('#vfacts').textContent = onPage.length ? `${onPage.length} VALUE${onPage.length>1?'S':''} ON THIS PAGE` : '';
+  const pageBtn = document.querySelector('.vmode [data-m="page"]');
+  pageBtn.disabled = !src; pageBtn.title = src ? '' : 'Original pages are not available for this source';
+  const mode = vmode === 'page' && src ? 'page' : 'text';
+  document.querySelectorAll('.vmode button').forEach(b => b.classList.toggle('on', b.dataset.m === mode));
+
+  $('#vbody').classList.toggle('fit', mode === 'page');
+  if (mode === 'text') {
+    if (!f.markdown) return vEmpty(BUSY.includes(f.status) ? 'NDI is reading ' + esc(f.name) + '…' : f.status === 'queued' ? 'Hit Read filings to parse this document.' : 'No text for this filing.');
+    return renderText(f, pages, onPage, x);
+  }
+  $('#doc').hidden = true; $('#vempty').hidden = true; $('#vpagebox').hidden = false;
+  const shown = f.id + ':' + f.vp;
+  if ($('#vboxes').dataset.page !== shown) { $('#vboxes').innerHTML = ''; $('#vboxes').dataset.page = shown; }   // no stale boxes over a new page
+  let page = null, vp1 = null;
+  // the whole page fits the panel - no scrolling; ⤢ expands the panel for a bigger view
+  const vb = $('#vbody'), aw = vb.clientWidth - 32, ah = vb.clientHeight - 32;
+  const fitBox = (w, h) => { const k = Math.max(0.05, Math.min(aw / w, ah / h)); $('#vpagebox').style.width = Math.floor(w * k) + 'px'; $('#vpagebox').style.height = Math.floor(h * k) + 'px'; return k; };
+  if (src.kind === 'image') {
+    $('#vcanvas').hidden = true; $('#vimg').hidden = false;
+    const img = $('#vimg');
+    if (img.src !== src.url) { img.src = src.url; try { await img.decode(); } catch (e) {} if (tok !== vtoken) return; }
+    fitBox(img.naturalWidth || 1, img.naturalHeight || 1);
+  } else {
+    $('#vimg').hidden = true; $('#vcanvas').hidden = false;
+    page = await src.pdf.getPage(f.vp); if (tok !== vtoken) return;
+    vp1 = page.getViewport({scale:1});
+    const k = fitBox(vp1.width, vp1.height), dpr = window.devicePixelRatio || 1;
+    const vp = page.getViewport({scale: k * dpr}), c = $('#vcanvas');
+    const key = `${f.id}:${f.vp}:${Math.floor(vp.width)}x${Math.floor(vp.height)}`;
+    if (c.dataset.key !== key) {   // same page at the same size: keep the pixels, just redraw boxes
+      // draw off-screen, then swap in - the old page stays up instead of flashing white
+      const off = document.createElement('canvas'); off.width = Math.floor(vp.width); off.height = Math.floor(vp.height);
+      if (vtask) vtask.cancel();
+      vtask = page.render({canvasContext:off.getContext('2d'), viewport:vp});
+      try { await vtask.promise; } catch (e) { return; }   // superseded by a newer render
+      if (tok !== vtoken) return;
+      c.width = off.width; c.height = off.height; c.getContext('2d').drawImage(off, 0, 0);
+      c.dataset.key = key;
+    }
+    if (tok !== vtoken) return;
+  }
+  let html = '';
+  const placed = [];
+  for (const y of onPage) placed.push([y, await rectsFor(f, y, page, vp1)]);
+  const area = rs => rs.reduce((a, r) => a + r.w * r.h, 0);
+  placed.sort((p, q) => area(q[1]) - area(p[1]));   // smaller boxes on top, so overlapping values stay clickable
+  for (const [y, rs] of placed) {
+    rs.forEach((r, i) => {
+      html += `<div class="hbox ${y===x?'on':''} ${y.fresh?'fresh':''}" data-id="${y.id}" title="${esc(y.label)}" style="left:${(r.x*100-.5).toFixed(2)}%;top:${(r.y*100-.35).toFixed(2)}%;width:${(r.w*100+1).toFixed(2)}%;height:${(r.h*100+.7).toFixed(2)}%">`
+            + (i === 0 ? `<i>${esc(y.label)} · ${esc(fmtVal(y.id, y.value))}</i>` : '') + '</div>';
+    });
+  }
+  if (tok !== vtoken) return;
+  $('#vboxes').innerHTML = html;
+  document.querySelectorAll('#vboxes .hbox').forEach(b => b.onclick = () => selectFact(b.dataset.id));
+}
+// TEXT mode: NDI's parsed text of the same page, every value's source quote highlighted.
+function renderText(f, pages, onPage, x){
+  $('#vpagebox').hidden = true; $('#vempty').hidden = true; const d = $('#doc'); d.hidden = false;
+  const txt = pages ? (pages[f.vp] || '') : f.markdown;
+  const ranges = [];
+  (pages ? onPage : f.facts.filter(y => y.status === 'found')).forEach(y => {
+    if (!y.quote) return;
+    for (const q of [y.quote.trim(), y.quote.trim().slice(0, 60)]) {
+      const at = txt.indexOf(q); if (at >= 0) { ranges.push({a:at, b:at + q.length, y}); break; }
+    }
+  });
+  ranges.sort((p, q) => p.a - q.a);
+  let html = '', pos = 0;
+  ranges.forEach(r => { if (r.a < pos) return; html += esc(txt.slice(pos, r.a)) + `<mark class="${r.y===x?'on':''}" data-id="${r.y.id}" title="${esc(r.y.label)}">${esc(txt.slice(r.a, r.b))}</mark>`; pos = r.b; });
+  html += esc(txt.slice(pos));
+  d.innerHTML = `<span class="pmark">${pages ? 'PAGE ' + f.vp : 'FULL TEXT · NO PAGE MARKERS'}</span>` + html.replace(/-{3}\s*Page\s+(\d+)\s*-{3}/gi, '<span class="pmark">PAGE $1</span>');
+  d.querySelectorAll('mark').forEach(m => m.onclick = () => selectFact(m.dataset.id));
+  const on = d.querySelector('mark.on');
+  $('#vbody').scrollTop = on ? Math.max(0, on.offsetTop - 140) : 0;
+}
+$('#vprev').onclick = () => { if (fileSel) { fileSel.follow = false; fileSel.vp--; renderViewer(); } };
+$('#vnext').onclick = () => { if (fileSel) { fileSel.follow = false; fileSel.vp++; renderViewer(); } };
+// expand: the viewer opens near full-window; Esc or ✕ closes it
+function setExpanded(on){
+  $('#vpanel').classList.toggle('expanded', on);
+  $('#vexpand').textContent = on ? '✕' : '⤢'; $('#vexpand').title = on ? 'Close (Esc)' : 'Expand';
+  renderViewer();
+}
+$('#vexpand').onclick = () => setExpanded(!$('#vpanel').classList.contains('expanded'));
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('#vpanel').classList.contains('expanded')) setExpanded(false); });
+document.querySelectorAll('.vmode button').forEach(b => b.onclick = () => { vmode = b.dataset.m; renderViewer(); });
+document.addEventListener('keydown', e => {
+  if ($('#v-ndi').hidden || /INPUT|TEXTAREA|SELECT/.test(e.target.tagName) || $('#keymodal').classList.contains('show')) return;
+  if (e.key === 'ArrowLeft' && !$('#vprev').disabled) $('#vprev').click();
+  if (e.key === 'ArrowRight' && !$('#vnext').disabled) $('#vnext').click();
+});
+let _rz; window.addEventListener('resize', () => { clearTimeout(_rz); _rz = setTimeout(() => { if (!$('#v-ndi').hidden) renderViewer(); }, 200); });
+
+// ---- handoff to the gate ----
+$('#sendbtn').onclick = () => {
+  const ready = files.filter(f => f.status === 'ready'); if (!ready.length) return;
+  const v = $('#fsig').value;
+  const sig = v.startsWith('new:')
+    ? {id:Date.now(), tk:v.slice(4), side:'LONG', size:1, strat:'FILING', status:'pending', ctx:'', heads:'', ndi:null}
+    : signals.find(s => s.id === +v) || sel;
+  // only this company's filings (and ones without a ticker) go to the signal
+  const mine = ready.filter(f => !tickerOf(f) || tickerOf(f) === sig.tk), other = ready.filter(f => !mine.includes(f));
+  if (!mine.length) {
+    const t = [...new Set(other.map(tickerOf))].join(', ');
+    if (!confirm(`These filings are for ${t}, but the signal is ${sig.tk}.\n\nDrex would judge a ${sig.tk} trade on another company's numbers. Attach anyway?`)) return;
+    mine.push(...other.splice(0));
+  }
+  if (!signals.includes(sig)) signals.unshift(sig);
+  sig.ndi = mine.map(f => ({name:f.name, pages:f.pages, markdown:f.markdown || '', facts:f.facts}));
+  sig.ndiText = buildNdiText(sig);
+  stage('drex', 'ok', '→ ' + sig.tk);
+  showView('gate'); select(sig.id);
+  const n = mine.reduce((a, f) => a + found(f).length, 0);
+  const skipped = other.length ? ` Skipped ${other.length} for ${[...new Set(other.map(tickerOf))].join(', ')} - send those to their own signal.` : '';
+  toast(`Attached ${mine.length} filing${mine.length>1?'s':''} · ${n} grounded facts to ${sig.tk}. Hit RUN GATE.${skipped}`, true);
+};
+
+// ---- recorded run: export a live run, replay it in the demo ----
+const toDataURL = b => new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result); fr.onerror = () => r(null); fr.readAsDataURL(b); });
+$('#exportbtn').onclick = async () => {
+  const live = files.filter(f => f.status === 'ready' && !f.replay); if (!live.length) return;
+  $('#exportbtn').textContent = 'PACKING…';
+  const out = [];
+  for (const f of live) {
+    const facts = [];
+    for (const x of f.facts) {
+      await loadCrop(x);
+      facts.push({id:x.id, label:x.label, value:x.value, status:x.status, confidence:x.confidence, page:x.page, quote:x.quote, polys:x.polys || null,
+                  method:x.method || null, locConf:x.locConf ?? null, cropData: x.blob ? await toDataURL(x.blob) : null});
+    }
+    // the original pages, so the demo shows the real document (public filings only - keep it small)
+    let doc = null;
+    if (f.file && f.file.size <= 15e6 && (isPdf(f) || /^image\//.test(f.file.type))) doc = await toDataURL(new Blob([f.file], {type: isPdf(f) ? 'application/pdf' : f.file.type}));
+    else if (f._src && f._src.converted) doc = await toDataURL(new Blob([f._src.bytes], {type:'application/pdf'}));
+    out.push({name:f.name, size:f.size || null, url:f.url || null, pages:f.pages, ocr:f.ocr, markdown:f.markdown, ops:f.ops || {}, facts, doc});
+  }
+  const g = LAST_GATE && LAST_GATE.withNdi ? LAST_GATE : null;
+  const rec = {format:'night-desk/ndi-demo@1', recorded_at:new Date().toISOString(), files:out, gate:g ? g.res : null, gate_signal:g ? g.sig : null};
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(rec)], {type:'application/json'})); a.download = 'ndi-demo.json'; a.click();
+  $('#exportbtn').textContent = 'EXPORT RUN ⤓';
+  toast('Saved ndi-demo.json - put it in demo/ and TRY THE DEMO replays this run.' + (g ? '' : '\nRun the gate with these filings attached first to include the Drex decision.'), true);
+};
+async function loadRecording(){
+  try { const r = await fetch('/demo/ndi-demo.json'); if (!r.ok) return false; REC = await r.json(); } catch (e) { return false; }
+  if (!REC || !Array.isArray(REC.files) || !REC.files.length) return false;
+  files = REC.files.map(rf => ({id:++fid, name:rf.name, size:rf.size, status:'queued', facts:[], replay:true, rec:rf}));
+  fileSel = files[0]; factSel = null; renderFiles(); renderFacts();
+  return true;
+}
+
+renderFiles();
 select(1);
 </script>
 </body>
